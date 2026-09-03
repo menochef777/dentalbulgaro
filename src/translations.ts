@@ -1,4 +1,4 @@
-export type Language = 'bg' | 'en' | 'tr' | 'ro' | 'pt';
+export type Language = 'bg' | 'en' | 'tr' | 'ro';
 
 export interface LanguageOption {
   code: Language;
@@ -12,7 +12,6 @@ export const LANGUAGES: LanguageOption[] = [
   { code: 'en', label: 'EN', name: 'English', flag: '🇬🇧' },
   { code: 'tr', label: 'TR', name: 'Türkçe', flag: '🇹🇷' },
   { code: 'ro', label: 'RO', name: 'Română', flag: '🇷🇴' },
-  { code: 'pt', label: 'PT', name: 'Português', flag: '🇵🇹' },
 ];
 
 export const TRANSLATIONS = {
@@ -462,118 +461,6 @@ export const TRANSLATIONS = {
       partialDenture: 'Proteză parțială — €300',
       repair: 'Reparație — €60',
       toothPlacement: 'Montare dinte — €50',
-    },
-  },
-  pt: {
-    nav: {
-      services: 'SERVIÇOS',
-      process: 'PROCESSO',
-      pricing: 'PREÇOS',
-      contact: 'CONTACTO',
-      dentalLab: 'DENTAL PROSTHETICS',
-      lab: 'LABORATORY',
-    },
-    hero: {
-      tagService: 'TOTAIS / PARCIAIS',
-      tagLocation: 'BLAGOEVGRAD / BG',
-      headlineLine1: 'PRÓTESES',
-      headlineLine2: 'COM PRECISÃO',
-      cta: 'CONTACTE-NOS',
-      scroll: 'ROLAR PARA EXPLORAR',
-    },
-    section02: {
-      badge: 'RADI / 02',
-      location: 'BLAGOEVGRAD / BG',
-      headlineLine1: 'PRECISÃO',
-      headlineLine2: 'EM CADA',
-      headlineLine3: 'DETALHE',
-      statement: 'Próteses totais e parciais, confecionadas em laboratório privado.',
-      block1Title: 'PRÓTESES TOTAIS',
-      block1Price: '€350',
-      block2Title: 'PRÓTESES PARCIAIS',
-      block2Price: '€300',
-      learnMore: 'SABER MAIS',
-      mediaPlaceholder: 'PRÉ-VISUALIZAÇÃO 360°',
-      mediaSubtitle: 'ROTAÇÃO DETALHADA 1:1',
-    },
-    loop360: {
-      badge: 'LOOP VIRTUAL 360°',
-      tag: 'ROTAÇÃO 3D',
-      toggle169: '16:9 PANORÂMICO',
-      toggle916: '9:16 VERTICAL',
-      hint: 'ARRASTE PARA GIRAR 360°',
-      speed: 'VELOCIDADE',
-      fullscreen: 'EXPANDIR',
-    },
-    pricingSection: {
-      badge: 'RADI / 03',
-      heading: 'PREÇOS',
-      selectBtn: 'SELECIONAR',
-      card1: {
-        category: 'TOTAL',
-        title: 'PRÓTESE TOTAL',
-        price: '€350',
-        desc: 'Prótese total',
-      },
-      card2: {
-        category: 'PARCIAL',
-        title: 'PRÓTESE PARCIAL',
-        price: '€300',
-        desc: 'Prótese parcial',
-      },
-      card3: {
-        category: 'SERVIÇOS',
-        title: 'REPARAÇÃO',
-        price: '€60',
-        additionalService: 'COLOCAÇÃO DE DENTE — €50',
-        item1Title: 'Reparação',
-        item1Price: '€60',
-        item2Title: 'Colocação de dente',
-        item2Price: '€50',
-      },
-    },
-    processSection: {
-      badge: 'RADI / 04',
-      heading: 'COMO É CRIADO',
-      subheading: 'DA PRECISÃO À PRÓTESE CONCLUÍDA.',
-      mediaLabel: 'PROCESSO DE LABORATÓRIO',
-      mediaStage: 'RESERVED PROCESS STAGE',
-      steps: [
-        {
-          num: '01',
-          title: 'MEDIÇÃO',
-          desc: 'Preparação para confunção.',
-        },
-        {
-          num: '02',
-          title: 'FABRICAÇÃO',
-          desc: 'Fabrico da prótese.',
-        },
-        {
-          num: '03',
-          title: 'AJUSTE',
-          desc: 'Ajuste de alta precisão.',
-        },
-        {
-          num: '04',
-          title: 'PRÓTESE FINALIZADA',
-          desc: 'Pronta a usar.',
-        },
-      ],
-    },
-    contactModal: {
-      badge: 'LABORATÓRIO RADI',
-      title: 'CONTACTE-NOS',
-      desc: 'Fabrico próteses dentárias, acrílicas totais e parciais. Para contacto direto e informações:',
-      locationLabel: 'LOCALIZAÇÃO',
-      locationValue: 'Blagoevgrad, Bulgária',
-      contactLabel: 'CONTACTO DIRETO',
-      contactValue: 'RADI Dental Prosthetics Laboratory',
-      pricesHeader: 'PREÇOS',
-      fullDenture: 'Prótese total — €350',
-      partialDenture: 'Prótese parcial — €300',
-      repair: 'Reparação — €60',
-      toothPlacement: 'Colocação de dente — €50',
     },
   },
 };

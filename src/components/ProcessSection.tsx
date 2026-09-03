@@ -175,24 +175,27 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
                   loop
                   muted
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover object-center opacity-70 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-75 pointer-events-none"
                 />
               ) : (
-                <img
-                  src={
-                    activeStep === 0
-                      ? '/images/pricing_technician_repair.jpg'
-                      : activeStep === 1
-                      ? '/images/pricing_partial_denture.jpg'
-                      : '/images/pricing_full_denture.jpg'
-                  }
-                  alt="Laboratory craftsmanship stage"
-                  className="absolute inset-0 w-full h-full object-cover object-center opacity-35 filter brightness-85 contrast-110 pointer-events-none transition-all duration-700"
-                />
+                <div className="absolute inset-0 w-full h-full">
+                  <img
+                    src={
+                      activeStep === 0
+                        ? '/images/pricing_technician_repair.jpg'
+                        : activeStep === 1
+                        ? '/images/dental_masterpiece_craft.jpg'
+                        : '/images/pricing_full_denture.jpg'
+                    }
+                    alt="Laboratory craftsmanship stage"
+                    className="w-full h-full object-cover object-center opacity-65 filter brightness-95 contrast-105 pointer-events-none transition-all duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080a12] via-[#080a12]/50 to-black/30" />
+                </div>
               )}
 
               {/* Internal technical texture and subtle backlight */}
-              <div className="absolute inset-0 bg-subtle-grain opacity-40 pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-subtle-grain opacity-30 pointer-events-none z-10" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.1)_0%,transparent_75%)] pointer-events-none z-10" />
 
               {/* Corner Registration Marks */}
@@ -215,9 +218,9 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
 
               {/* Dynamic Center Visual Representation of Current Active Step */}
               <div className="relative z-20 my-auto flex flex-col items-center justify-center text-center py-6">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-white/[0.2] bg-black/60 backdrop-blur-md flex items-center justify-center relative mb-5 shadow-2xl">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-white/[0.25] bg-black/75 backdrop-blur-md flex items-center justify-center relative mb-4 shadow-2xl">
                   <div className="absolute inset-2 rounded-full border border-dashed border-white/[0.25] animate-[spin_30s_linear_infinite]" />
-                  <span className="font-condensed font-black text-[32px] sm:text-[38px] text-[#F3F0E9]">
+                  <span className="font-condensed font-black text-[28px] sm:text-[34px] text-[#F3F0E9]">
                     0{activeStep + 1}
                   </span>
                 </div>
@@ -225,7 +228,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
                 <div className="font-condensed font-extrabold uppercase text-[20px] sm:text-[24px] tracking-tight text-[#F3F0E9] mb-1 drop-shadow-lg">
                   {p.steps[activeStep].title}
                 </div>
-                <div className="font-editorial text-[13px] text-[#C5C4BF] max-w-[240px] drop-shadow">
+                <div className="font-editorial text-[13px] sm:text-[14px] text-[#D5D4CF] max-w-[280px] drop-shadow leading-relaxed">
                   {p.steps[activeStep].desc}
                 </div>
               </div>

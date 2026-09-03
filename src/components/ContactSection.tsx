@@ -73,14 +73,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </motion.h2>
           </div>
 
-          {/* Location text block */}
+          {/* Location & Phone text block */}
           <motion.div
             {...getStaggerVariants(2)}
-            className="flex flex-col text-[14px] sm:text-[16px] font-mono tracking-[0.16em] text-[#A8A7A2] uppercase mb-8 sm:mb-10 leading-relaxed border-l-2 border-[#A6B09F] pl-4"
+            className="flex flex-col sm:flex-row sm:items-center gap-6 text-[14px] sm:text-[16px] font-mono tracking-[0.16em] uppercase mb-8 sm:mb-10 leading-relaxed border-l-2 border-[#A6B09F] pl-4"
           >
-            <span className="text-[#F3F0E9] font-bold">БЛАГОЕВГРАД</span>
-            <span>АЛЕН МАК</span>
-            <span>БЪЛГАРИЯ</span>
+            <div className="flex flex-col text-[#A8A7A2]">
+              <span className="text-[#F3F0E9] font-bold">БЛАГОЕВГРАД</span>
+              <span>АЛЕН МАК</span>
+              <span>БЪЛГАРИЯ</span>
+            </div>
+
+            <a
+              href="tel:0879108332"
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/[0.06] hover:bg-[#A6B09F] hover:text-[#050505] border border-white/[0.14] text-[#F3F0E9] text-[13px] font-mono tracking-wider transition-all w-fit cursor-pointer"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#A6B09F] animate-pulse" />
+              <span>087 910 8332</span>
+            </a>
           </motion.div>
 
           {/* Large CTA Button */}
@@ -117,14 +127,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             <span>BLAGOEVGRAD / BG</span>
           </div>
 
-          {/* Maps Framed Container */}
+          {/* Maps Framed Container — Lightweight & Safe for Mobile Gestures */}
           <div className="relative w-full h-[290px] sm:h-[330px] lg:h-[400px] rounded-[24px] border border-white/[0.18] bg-[#080a12] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-xl">
             
-            {/* Real Google Maps Embed with dark/grayscale filter */}
+            {/* Real Google Maps Embed with pointer-events-none on mobile so scrolling never freezes */}
             <iframe
               title="Google Maps Location - Alen Mak, Blagoevgrad"
               src={googleMapsEmbedUrl}
-              className="w-full h-full border-0 filter grayscale invert contrast-[0.9] opacity-80"
+              className="w-full h-full border-0 filter grayscale invert contrast-[0.9] opacity-80 pointer-events-none sm:pointer-events-auto"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -140,7 +150,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 bg-[#050505]/90 hover:bg-black text-[#F3F0E9] hover:text-[#A6B09F] text-[10px] font-mono tracking-wider uppercase px-3.5 py-2 rounded-full border border-white/[0.2] backdrop-blur-md transition-all shadow-xl group"
+              className="absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 bg-[#050505]/95 hover:bg-black text-[#F3F0E9] hover:text-[#A6B09F] text-[10px] font-mono tracking-wider uppercase px-3.5 py-2 rounded-full border border-white/[0.25] backdrop-blur-md transition-all shadow-xl group pointer-events-auto cursor-pointer"
             >
               <span>{isBg ? 'ОТВОРИ В GOOGLE MAPS' : 'OPEN IN GOOGLE MAPS'}</span>
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 stroke-[2.2]" />

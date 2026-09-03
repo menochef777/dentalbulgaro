@@ -19,22 +19,52 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0.15]);
   const heroY = useTransform(scrollY, [0, 600], [0, -80]);
 
-  // Boomerang loop effect for smooth forward-and-backward seamless rotation
+  // Guaranteed continuous 360 rotation loop with multi-event recovery
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    let isReversing = false;
-
-    const handleEnded = () => {
-      // Invert playback direction or restart smoothly
-      video.currentTime = 0;
-      video.play().catch(() => {});
+    const playVideo = () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
     };
 
+    const handleEnded = () => {
+      video.currentTime = 0;
+      playVideo();
+    };
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        playVideo();
+      }
+    };
+
+    // Event listeners
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('pause', playVideo);
+    video.addEventListener('stalled', playVideo);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', playVideo);
+
+    // Initial play
+    playVideo();
+
+    // Heartbeat safety check
+    const interval = setInterval(() => {
+      if (video && video.paused) {
+        playVideo();
+      }
+    }, 1500);
+
     return () => {
       video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('pause', playVideo);
+      video.removeEventListener('stalled', playVideo);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', playVideo);
+      clearInterval(interval);
     };
   }, []);
 
@@ -43,7 +73,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
       id="hero-section"
       className="relative min-h-[100svh] md:min-h-screen w-full bg-[#050505] text-[#F3F0E9] flex flex-col justify-between px-4 sm:px-8 lg:px-12 pt-20 sm:pt-24 pb-5 sm:pb-8 overflow-hidden"
     >
-      {/* 1. BACKGROUND 360 PROSTHESIS VIDEO LOOP */}
+      {/* 1. BACKGROUND 360 PROSTHESIS VIDEO LOOP (CLEAN & CLEAR) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video
           ref={videoRef}
@@ -51,16 +81,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
           loop
           muted
           playsInline
-          className="w-full h-full object-cover object-center opacity-45 scale-105 filter brightness-90 contrast-110 transition-opacity duration-1000"
+          className="w-full h-full object-cover object-center opacity-85 scale-105 filter brightness-105 contrast-105 transition-opacity duration-700"
         >
           <source src="/videos/dental169.mp4" type="video/mp4" media="(min-width: 768px)" />
           <source src="/videos/dental916.mp4" type="video/mp4" />
         </video>
 
-        {/* Soft, weak dark overlay (camada preta suave) to ensure editorial contrast */}
-        <div className="absolute inset-0 bg-[#050505]/45 backdrop-blur-[0.5px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-transparent to-[#050505]" />
-        <div className="absolute inset-0 bg-subtle-grain opacity-30" />
+        {/* Clear & illuminated layer (camada mais clara) */}
+        <div className="absolute inset-0 bg-[#050505]/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-transparent to-[#050505]/80" />
+        <div className="absolute inset-0 bg-subtle-grain opacity-20" />
       </div>
 
       {/* 2. TOP EDITORIAL META */}
