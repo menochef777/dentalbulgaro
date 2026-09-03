@@ -81,6 +81,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
           loop
           muted
           playsInline
+          poster="/images/dental_poster_169.webp"
+          preload="metadata"
           className="w-full h-full object-cover object-center opacity-85 scale-105 filter brightness-105 contrast-105 transition-opacity duration-700"
         >
           <source src="/videos/dental169.mp4" type="video/mp4" media="(min-width: 768px)" />

@@ -41,11 +41,18 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
         style={{ scale: bgScale, y: bgY }}
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none"
       >
-        <img
-          src="/images/mindloop_process_bg.jpg"
-          alt="Immersive 3D Process Scenery"
-          className="w-full h-full object-cover object-center opacity-65 filter brightness-105 contrast-115"
-        />
+        <picture>
+          <source srcSet="/images/mindloop_process_bg-mobile.webp" media="(max-width: 768px)" type="image/webp" />
+          <img
+            src="/images/mindloop_process_bg.webp"
+            alt="Immersive 3D Process Scenery"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center opacity-65 filter brightness-105 contrast-115"
+          />
+        </picture>
         {/* Soft atmospheric gradient transitions */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/45 to-[#050505]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-transparent to-[#050505]/80" />
@@ -175,6 +182,8 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
                   loop
                   muted
                   playsInline
+                  poster="/images/dental_poster_169.webp"
+                  preload="none"
                   className="absolute inset-0 w-full h-full object-cover object-center opacity-75 pointer-events-none"
                 />
               ) : (
@@ -182,12 +191,16 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
                   <img
                     src={
                       activeStep === 0
-                        ? '/images/pricing_technician_repair.jpg'
+                        ? '/images/pricing_technician_repair.webp'
                         : activeStep === 1
-                        ? '/images/dental_masterpiece_craft.jpg'
-                        : '/images/pricing_full_denture.jpg'
+                        ? '/images/dental_masterpiece_craft.webp'
+                        : '/images/pricing_full_denture.webp'
                     }
                     alt="Laboratory craftsmanship stage"
+                    width={600}
+                    height={500}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center opacity-65 filter brightness-95 contrast-105 pointer-events-none transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080a12] via-[#080a12]/50 to-black/30" />

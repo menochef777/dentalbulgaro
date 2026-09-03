@@ -36,7 +36,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       title: isBg ? 'ПЪЛНА ПРОТЕЗА' : p.card1.title || 'FULL DENTURE',
       price: '€350',
       period: isBg ? '/ протеза' : '/ denture',
-      image: '/images/pricing_full_denture.jpg',
+      image: '/images/pricing_full_denture.webp',
+      imageMobile: '/images/pricing_full_denture-mobile.webp',
       imageAlt: 'Complete Dental Prosthesis — Full Acrylic & Ceramic Denture',
       desc: isBg
         ? 'Пълна плакова протеза, изработена в частна лаборатория с индивидуален анатомичен профил.'
@@ -51,7 +52,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       title: isBg ? 'ЧАСТИЧНА ПРОТЕЗА' : p.card2.title || 'PARTIAL DENTURE',
       price: '€300',
       period: isBg ? '/ протеза' : '/ denture',
-      image: '/images/pricing_partial_denture.jpg',
+      image: '/images/pricing_partial_denture.webp',
+      imageMobile: '/images/pricing_partial_denture-mobile.webp',
       imageAlt: 'Partial Dental Prosthesis — Precision Fit',
       desc: isBg
         ? 'Частична протеза за прецизно възстановяване на дъвкателната функция и естетика.'
@@ -67,7 +69,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       price: '€60',
       priceSubtitle: isBg ? 'ПОСТАВЯНЕ НА ЗЪБ — €50' : (p.card3.additionalService || 'TOOTH PLACEMENT — €50'),
       period: isBg ? '' : '',
-      image: '/images/pricing_technician_repair.jpg',
+      image: '/images/pricing_technician_repair.webp',
+      imageMobile: '/images/pricing_technician_repair-mobile.webp',
       imageAlt: 'Dental Technician Precision Repair and Tooth Restoration',
       desc: isBg
         ? 'Експресна поправка на счупена протеза или прецизно поставяне на нов зъб.'
@@ -90,11 +93,18 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         style={{ scale: bgScale, y: bgY }}
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none"
       >
-        <img
-          src="/images/mindloop_pricing_bg.jpg"
-          alt="Immersive 3D Dental Environment"
-          className="w-full h-full object-cover object-center opacity-70 filter brightness-105 contrast-115"
-        />
+        <picture>
+          <source srcSet="/images/mindloop_pricing_bg-mobile.webp" media="(max-width: 768px)" type="image/webp" />
+          <img
+            src="/images/mindloop_pricing_bg.webp"
+            alt="Immersive 3D Dental Environment"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center opacity-70 filter brightness-105 contrast-115"
+          />
+        </picture>
         {/* Soft atmospheric gradient transitions */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-[#050505]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-transparent to-[#050505]/80" />
@@ -160,11 +170,18 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
                 {/* Card Image Banner */}
                 <div className="relative w-full h-[190px] sm:h-[220px] rounded-[18px] overflow-hidden mb-6 border border-white/[0.14] bg-[#050505] shadow-inner">
-                  <img
-                    src={card.image}
-                    alt={card.imageAlt}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-95 contrast-105"
-                  />
+                  <picture>
+                    <source srcSet={card.imageMobile} media="(max-width: 640px)" type="image/webp" />
+                    <img
+                      src={card.image}
+                      alt={card.imageAlt}
+                      width={400}
+                      height={220}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-95 contrast-105"
+                    />
+                  </picture>
                   {/* Subtle vignette gradient over image */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#06080e] via-transparent to-black/20" />
                   

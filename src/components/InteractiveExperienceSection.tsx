@@ -77,11 +77,18 @@ export const InteractiveExperienceSection: React.FC<InteractiveExperienceSection
         style={{ scale: bgScale, y: bgY }}
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none"
       >
-        <img
-          src="/images/mindloop_experience_bg.jpg"
-          alt="Immersive Ceramic Scenery"
-          className="w-full h-full object-cover object-center opacity-65 filter brightness-105 contrast-115"
-        />
+        <picture>
+          <source srcSet="/images/mindloop_experience_bg-mobile.webp" media="(max-width: 768px)" type="image/webp" />
+          <img
+            src="/images/mindloop_experience_bg.webp"
+            alt="Immersive Ceramic Scenery"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover object-center opacity-65 filter brightness-105 contrast-115"
+          />
+        </picture>
         {/* Soft atmospheric gradient transitions */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/45 to-[#050505]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-transparent to-[#050505]/80" />

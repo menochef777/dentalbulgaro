@@ -10,5 +10,18 @@ export default defineConfig({
   server: {
     port: 3000,
     open: false
-  }
+  },
+  build: {
+    cssCodeSplit: true,
+    minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-motion': ['motion'],
+          'vendor-icons': ['lucide-react'],
+        },
+      },
+    },
+  },
 });
