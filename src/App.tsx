@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { Menu, X, CircleUserRound, Phone } from 'lucide-react';
 
 // ==========================================
 // TYPES & LANGUAGES (BG, EN, TR, RO)
@@ -34,14 +35,15 @@ const CONTENT = {
       bookCta: 'Запишете час',
     },
     hero1: {
-      tag: 'Стоматологичен кабинет във Варна',
+      badge: 'индивидуален подход и спокойна обстановка',
       headlinePart1: 'Внимателна грижа.',
       headlinePart2: 'Прецизно лечение.',
-      description: 'Търсите внимателен и прецизен зъболекар във Варна? Предлагам индивидуален подход и съвременно стоматологично лечение в спокойна и комфортна обстановка.',
-      ctaBook: 'Запишете час',
-      ctaCall: 'Обадете се: 088 497 0607',
-      scrollDown: 'Скролнете за детайли',
-      videoPlaceholder: 'Видео зона • Съвременно стоматологично лечение',
+      subtitle: 'Търсите внимателен и прецизен зъболекар във Варна? Предлагам съвременно стоматологично лечение в спокойна и комфортна обстановка.',
+      cta: 'Запишете час',
+      stat1Value: 'Варна, България',
+      stat1Label: 'Индивидуален подход',
+      stat2Value: '088 497 0607',
+      stat2Label: 'Консултация & Лечение',
     },
     hero2: {
       bars: ['Внимателен подход', 'Прецизно лечение', 'Спокойна обстановка'],
@@ -103,14 +105,15 @@ const CONTENT = {
       bookCta: 'Book an Appointment',
     },
     hero1: {
-      tag: 'Dental Clinic in Varna',
+      badge: 'individual approach & calm environment',
       headlinePart1: 'Attentive Care.',
       headlinePart2: 'Precise Treatment.',
-      description: 'Looking for an attentive and precise dentist in Varna? I offer an individualized approach and modern dental treatment in a calm, comfortable environment.',
-      ctaBook: 'Book Appointment',
-      ctaCall: 'Call: 088 497 0607',
-      scrollDown: 'Scroll for details',
-      videoPlaceholder: 'Video Zone • Modern Dental Practice',
+      subtitle: 'Looking for an attentive and precise dentist in Varna? I offer modern dental treatments tailored to your individual needs.',
+      cta: 'Book an Appointment',
+      stat1Value: 'Varna, Bulgaria',
+      stat1Label: 'Individualized Approach',
+      stat2Value: '088 497 0607',
+      stat2Label: 'Consultation & Treatment',
     },
     hero2: {
       bars: ['Attentive Approach', 'Precise Treatment', 'Calm Atmosphere'],
@@ -172,14 +175,15 @@ const CONTENT = {
       bookCta: 'Randevu Alın',
     },
     hero1: {
-      tag: "Varna'da Diş Kliniği",
+      badge: 'kişiye özel yaklaşım & huzurlu ortam',
       headlinePart1: 'Özenli Bakım.',
       headlinePart2: 'Hassas Tedavi.',
-      description: "Varna'da özenli ve hassas bir diş hekimi mi arıyorsunuz? Huzurlu ve konforlu bir ortamda kişiye özel yaklaşım ve modern diş tedavisi sunuyorum.",
-      ctaBook: 'Randevu Alın',
-      ctaCall: 'Ara: 088 497 0607',
-      scrollDown: 'Detaylar için kaydırın',
-      videoPlaceholder: 'Video Alanı • Modern Diş Hekimliği',
+      subtitle: "Varna'da özenli ve hassas bir diş hekimi mi arıyorsunuz? Huzurlu ve konforlu bir ortamda modern diş tedavisi sunuyorum.",
+      cta: 'Randevu Alın',
+      stat1Value: 'Varna, Bulgaristan',
+      stat1Label: 'Kişiye Özel Yaklaşım',
+      stat2Value: '088 497 0607',
+      stat2Label: 'Danışmanlık & Tedavi',
     },
     hero2: {
       bars: ['Özenli Yaklaşım', 'Hassas Tedavi', 'Huzurlu Ortam'],
@@ -241,14 +245,15 @@ const CONTENT = {
       bookCta: 'Programare',
     },
     hero1: {
-      tag: 'Cabinet Stomatologic în Varna',
+      badge: 'abordare individuală și atmosferă calmă',
       headlinePart1: 'Îngrijire atentă.',
       headlinePart2: 'Tratament precis.',
-      description: 'Căutați un medic stomatolog atent și precis în Varna? Ofer abordare individualizată și tratamente stomatologice moderne într-o atmosferă calmă și confortabilă.',
-      ctaBook: 'Programare',
-      ctaCall: 'Sună: 088 497 0607',
-      scrollDown: 'Derulați pentru detalii',
-      videoPlaceholder: 'Zonă Video • Tratamente Stomatologice Moderne',
+      subtitle: 'Căutați un medic stomatolog atent și precis în Varna? Ofer tratamente moderne într-o atmosferă calmă și confortabilă.',
+      cta: 'Programare',
+      stat1Value: 'Varna, Bulgaria',
+      stat1Label: 'Abordare Individualizată',
+      stat2Value: '088 497 0607',
+      stat2Label: 'Consultație & Tratament',
     },
     hero2: {
       bars: ['Abordare atentă', 'Tratament precis', 'Atmosferă calmă'],
@@ -298,8 +303,11 @@ const CONTENT = {
 };
 
 // ==========================================
-// IMAGE URLS (High-end Dental Visuals)
+// IMAGE & VIDEO URLS
 // ==========================================
+const VIDEO_DESKTOP = '/imgs/vid169.mp4';
+const VIDEO_MOBILE = '/imgs/vid916.mp4';
+
 const HERO_IMAGE =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_113640_ccf3cf97-d447-425b-a134-d7b09fc743fc.png&w=1280&q=85';
 
@@ -313,6 +321,13 @@ const SECTION3_IMG2 =
 
 const SECTION3_BG =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114355_752ba9e6-0942-4abb-9047-5d9bb16632e9.png&w=1280&q=85';
+
+const AVATARS = [
+  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+  'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
+  'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
+  'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=100',
+];
 
 // ==========================================
 // REACT BITS: MAGNETIC COMPONENT
@@ -764,18 +779,16 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
 };
 
 // ==========================================
-// NAVBAR WITH FLAGS & LANGUAGE SELECTOR
+// MAIN APPLICATION COMPONENT
 // ==========================================
-interface NavbarProps {
-  currentLang: Language;
-  onSelectLang: (lang: Language) => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ currentLang, onSelectLang }) => {
+export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [currentLang, setCurrentLang] = useState<Language>('bg');
   const [menuOpen, setMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const langMenuRef = useRef<HTMLDivElement | null>(null);
   const t = CONTENT[currentLang];
+  const isMobile = useIsMobile();
 
   const currentLangObj = LANGUAGES.find((l) => l.code === currentLang) || LANGUAGES[0];
 
@@ -789,23 +802,33 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, onSelectLang }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [menuOpen]);
+  // Section 1 (Hero 1) Reveal Hook
+  const hero1Reveal = useStaggeredReveal(4);
+
+  // Section 2 (Hero 2 - Masked Cards)
+  const section2Ref = useRef<HTMLElement | null>(null);
+  const s2CardRefs = useRef<(HTMLElement | null)[]>([]);
+  const s2Reveal = useStaggeredReveal(4);
+  const s2Mask = useMaskPositions(section2Ref, s2CardRefs);
+  const s2ImageWidth = useImageWidth(HERO_IMAGE, s2Mask.sectionHeight);
+  const s2FocalX = isMobile ? 0.7 : 0.8;
+
+  // Section 3 (Smile Gallery & Services - Masked Cards)
+  const section3Ref = useRef<HTMLElement | null>(null);
+  const s3CardRefs = useRef<(HTMLElement | null)[]>([]);
+  const s3Reveal = useStaggeredReveal(4);
+  const s3Mask = useMaskPositions(section3Ref, s3CardRefs);
+  const s3ImageWidth = useImageWidth(SECTION2_IMAGE, s3Mask.sectionHeight);
+  const s3FocalX = isMobile ? 0.65 : 0.8;
+
+  // Section 4 (Approach & Overlays)
+  const s4Reveal = useStaggeredReveal(4);
 
   const navLinks = [
     { label: t.nav.home, href: '#hero1' },
     { label: t.nav.gallery, href: '#hero2' },
     { label: t.nav.services, href: '#services' },
     { label: t.nav.approach, href: '#approach' },
-    { label: t.nav.contact, href: '#approach' },
   ];
 
   const handleScroll = (href: string) => {
@@ -817,239 +840,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, onSelectLang }) => {
   };
 
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-6 py-2.5 md:py-3.5 bg-[#050505]/85 backdrop-blur-md border-b border-white/10 transition-all text-white">
-        {/* Logo Left */}
-        <Magnetic strength={0.25}>
-          <a href="#hero1" className="flex flex-col select-none group cursor-pointer">
-            <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-white group-hover:text-neutral-300 transition-colors">
-              {t.brandName}
-            </div>
-            <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-neutral-300 -mt-1.5 md:-mt-2 group-hover:text-white transition-colors">
-              {t.profession}
-            </div>
-            <span className="text-[8px] md:text-[9px] font-medium leading-none mt-1.5 md:mt-2 text-neutral-400 uppercase tracking-wider">
-              {t.location}
-            </span>
-          </a>
-        </Magnetic>
-
-        {/* Right Section: Flags + Desktop CTA */}
-        <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-          {/* Flag & Language Selector (BG, EN, TR, RO) */}
-          <div ref={langMenuRef} className="relative">
-            <button
-              type="button"
-              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-xs font-bold text-white transition-all cursor-pointer border border-white/15 shadow-sm"
-              aria-label="Смени езика / Change language"
-            >
-              <span className="text-base leading-none">{currentLangObj.flag}</span>
-              <span className="font-mono uppercase text-[11px] font-extrabold">
-                {currentLangObj.code}
-              </span>
-              <svg
-                className={`w-3 h-3 transition-transform duration-200 ${
-                  langDropdownOpen ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {/* Language Dropdown Menu */}
-            {langDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-38 bg-[#111111] rounded-2xl shadow-2xl border border-white/15 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-white">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    onClick={() => {
-                      onSelectLang(lang.code);
-                      setLangDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold transition-colors text-left cursor-pointer ${
-                      currentLang === lang.code
-                        ? 'bg-white/15 text-white font-bold'
-                        : 'text-neutral-300 hover:bg-white/10 hover:text-white'
-                    }`}
-                  >
-                    <span className="text-base leading-none">{lang.flag}</span>
-                    <span className="flex-1">{lang.label}</span>
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase">
-                      {lang.code}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Desktop Nav CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <Magnetic strength={0.3}>
-              <a
-                href={`tel:${t.phoneRaw}`}
-                className="text-xs md:text-sm font-semibold text-neutral-200 hover:text-white transition-colors px-3 py-1.5 rounded-full hover:bg-white/10"
-              >
-                {t.nav.bookCta}
-              </a>
-            </Magnetic>
-
-            <Magnetic strength={0.4}>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(true)}
-                className="px-5 py-2.5 bg-white rounded-full border border-white text-xs md:text-sm font-bold text-black hover:bg-neutral-200 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
-              >
-                Menu
-              </button>
-            </Magnetic>
-          </div>
-
-          {/* Mobile Hamburger */}
-          <div className="md:hidden">
-            <button
-              type="button"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Отвори меню"
-              className="w-9 h-9 flex items-center justify-center relative cursor-pointer"
-            >
-              <span
-                className={`absolute h-0.5 w-5 bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                  menuOpen ? 'rotate-45 translate-y-0' : '-translate-y-1.5'
-                }`}
-              />
-              <span
-                className={`absolute h-0.5 w-5 bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                  menuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
-                }`}
-              />
-              <span
-                className={`absolute h-0.5 w-5 bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                  menuOpen ? '-rotate-45 translate-y-0' : 'translate-y-1.5'
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu Overlay */}
-      <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
-          menuOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
-      >
-        <div
-          onClick={() => setMenuOpen(false)}
-          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
-            menuOpen ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-
-        <div
-          className={`absolute top-0 right-0 h-full w-[85%] max-w-sm bg-[#0C0C0C] text-white shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-            menuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
-        >
-          <div className="flex flex-col justify-between h-full px-7 py-12 pt-20">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((item, i) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  onClick={() => handleScroll(item.href)}
-                  className={`text-left text-3xl font-bold text-white hover:text-neutral-400 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] cursor-pointer py-1 ${
-                    menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-                  }`}
-                  style={{
-                    transitionDelay: menuOpen ? `${100 + i * 60}ms` : '0ms',
-                  }}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-4 pt-6 border-t border-white/10">
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Език / Language
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    onClick={() => onSelectLang(lang.code)}
-                    className={`flex items-center gap-2 p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      currentLang === lang.code
-                        ? 'bg-white text-black'
-                        : 'bg-white/10 text-neutral-300 hover:bg-white/20'
-                    }`}
-                  >
-                    <span>{lang.flag}</span>
-                    <span>{lang.label}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="pt-2">
-                <div className="text-xs font-semibold text-neutral-400 mb-1">
-                  {t.location} • {t.phoneDisplay}
-                </div>
-                <a
-                  href={`tel:${t.phoneRaw}`}
-                  onClick={() => setMenuOpen(false)}
-                  className="block w-full py-3.5 bg-white text-black rounded-full text-xs font-bold uppercase tracking-wider text-center hover:bg-neutral-200 transition-colors shadow-md"
-                >
-                  {t.nav.bookCta}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-// ==========================================
-// MAIN APPLICATION COMPONENT (4 SECTIONS)
-// ==========================================
-export default function App() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [currentLang, setCurrentLang] = useState<Language>('bg');
-  const t = CONTENT[currentLang];
-  const isMobile = useIsMobile();
-
-  // SECTION 1 (NEW PURE BLACK HERO FOR VIDEO)
-  const hero1Reveal = useStaggeredReveal(4);
-
-  // SECTION 2 (HERO 2 - MASKED CARDS)
-  const section2Ref = useRef<HTMLElement | null>(null);
-  const s2CardRefs = useRef<(HTMLElement | null)[]>([]);
-  const s2Reveal = useStaggeredReveal(4);
-  const s2Mask = useMaskPositions(section2Ref, s2CardRefs);
-  const s2ImageWidth = useImageWidth(HERO_IMAGE, s2Mask.sectionHeight);
-  const s2FocalX = isMobile ? 0.7 : 0.8;
-
-  // SECTION 3 (SMILE GALLERY & 7 SERVICES - MASKED CARDS)
-  const section3Ref = useRef<HTMLElement | null>(null);
-  const s3CardRefs = useRef<(HTMLElement | null)[]>([]);
-  const s3Reveal = useStaggeredReveal(4);
-  const s3Mask = useMaskPositions(section3Ref, s3CardRefs);
-  const s3ImageWidth = useImageWidth(SECTION2_IMAGE, s3Mask.sectionHeight);
-  const s3FocalX = isMobile ? 0.65 : 0.8;
-
-  // SECTION 4 (APPROACH, IMAGES, CONSULTATION & OVERLAYS)
-  const s4Reveal = useStaggeredReveal(4);
-
-  return (
     <div className="bg-[#050505] text-white selection:bg-white selection:text-black">
       {/* 0. EDITORIAL INTRO */}
       {showSplash && (
@@ -1059,112 +849,346 @@ export default function App() {
         />
       )}
 
-      {/* 1. FIXED NAVBAR WITH FLAGS */}
-      <Navbar currentLang={currentLang} onSelectLang={setCurrentLang} />
-
       {/* ========================================================================= */}
-      {/* SECTION 1 — NEW HERO 1 (PURE BLACK EDITORIAL & VIDEO STAGE)               */}
+      {/* SECTION 1 — LIQUID GLASS HERO WITH 3D LOOPING VIDEO BACKGROUND           */}
       {/* ========================================================================= */}
       <section
         ref={(el) => {
           hero1Reveal.containerRef.current = el;
         }}
         id="hero1"
-        className="min-h-screen w-full flex flex-col justify-between pt-24 md:pt-28 pb-8 px-4 sm:px-6 md:px-10 relative overflow-hidden bg-[#050505]"
+        className="relative h-screen w-full overflow-hidden flex flex-col justify-between"
       >
-        {/* Subtle atmospheric ambient glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)] pointer-events-none blur-[100px]" />
+        {/* Full-viewport Autoplaying Looping Muted PlaysInline Video Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* Desktop Video (16:9) */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="hidden md:block absolute inset-0 w-full h-full object-cover"
+          >
+            <source src={VIDEO_DESKTOP} type="video/mp4" />
+          </video>
 
-        {/* Top Eyebrow Tag */}
-        <div style={hero1Reveal.getAnimStyle(0)} className="z-10 flex items-center justify-between w-full">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs font-bold uppercase tracking-wider text-neutral-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{t.hero1.tag}</span>
-          </div>
-          <span className="hidden sm:inline-block text-xs font-mono tracking-widest text-neutral-400 uppercase">
-            {t.location}
-          </span>
+          {/* Mobile Video (9:16) */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="block md:hidden absolute inset-0 w-full h-full object-cover"
+          >
+            <source src={VIDEO_MOBILE} type="video/mp4" />
+          </video>
+
+          {/* Liquid dark subtle film overlay */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px] pointer-events-none" />
         </div>
 
-        {/* Center: Monumental Editorial Headline & Video Stage Container */}
-        <div className="my-auto py-8 md:py-12 z-10 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
-          <div style={hero1Reveal.getAnimStyle(1)}>
-            <h1 className="text-[clamp(2.8rem,9vw,9rem)] font-extrabold tracking-tight leading-[0.85] text-white uppercase select-none">
-              {t.hero1.headlinePart1}
-              <br />
-              <span className="text-neutral-400">{t.hero1.headlinePart2}</span>
-            </h1>
+        {/* NAVIGATION (z-20, top) */}
+        <nav className="relative z-20 flex items-center justify-between px-5 pt-6 sm:px-8 sm:pt-8 md:px-16 lg:px-20 select-none">
+          {/* Left: Custom SVG Logo + Dentist Brand */}
+          <a
+            href="#hero1"
+            className="flex items-center gap-3 cursor-pointer group"
+          >
+            <svg
+              className="w-8 h-8 md:w-9 md:h-9 fill-white transition-transform duration-300 group-hover:scale-105 shrink-0"
+              viewBox="0 0 256 256"
+            >
+              <path d="M 128 128 C 198.692 128 256 185.308 256 256 L 151.883 256 C 149.812 220.307 120.213 192 84 192 C 47.787 192 18.188 220.307 16.117 256 L 0 256 C 0 185.308 57.308 128 128 128 Z M 104.117 0 C 106.188 35.694 135.787 64 172 64 C 208.213 64 237.812 35.694 239.883 0 L 256 0 C 256 70.692 198.692 128 128 128 C 57.308 128 0 70.692 0 0 Z" />
+            </svg>
+            <div className="flex flex-col">
+              <span className="text-lg md:text-xl font-bold tracking-tight leading-tight uppercase text-white">
+                {t.brandName}
+              </span>
+              <span className="text-[10px] md:text-xs font-light tracking-widest text-white/70 uppercase">
+                {t.profession} • {t.location}
+              </span>
+            </div>
+          </a>
+
+          {/* Center: Liquid-Glass Rounded-Full Nav Pill (Desktop Only) */}
+          <div className="hidden md:flex items-center gap-8 liquid-glass rounded-full px-8 py-3">
+            {navLinks.map((link, idx) => (
+              <button
+                key={link.label}
+                type="button"
+                onClick={() => handleScroll(link.href)}
+                className={`text-sm font-medium transition-colors cursor-pointer ${
+                  idx === 0
+                    ? 'text-white font-semibold'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
           </div>
 
-          <p
-            style={hero1Reveal.getAnimStyle(2)}
-            className="text-sm sm:text-base md:text-xl text-neutral-300 max-w-2xl mt-6 md:mt-8 leading-relaxed font-normal"
-          >
-            {t.hero1.description}
-          </p>
-
-          {/* Dedicated Black Video Player / Canvas Container (Ready for user video) */}
-          <div
-            style={hero1Reveal.getAnimStyle(3)}
-            className="w-full max-w-4xl mt-8 md:mt-12 rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative aspect-video flex items-center justify-center group cursor-pointer"
-          >
-            {/* Ambient inner gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 pointer-events-none" />
-
-            {/* Video Placeholder / Player Box ready to link */}
-            <div className="relative z-10 flex flex-col items-center gap-3 p-6 text-center">
-              <div className="w-14 h-14 md:w-18 md:h-18 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center transition-transform group-hover:scale-110 shadow-lg">
+          {/* Right: Language Flags & User Actions */}
+          <div className="flex items-center gap-3">
+            {/* Language Selector in Liquid Glass */}
+            <div ref={langMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="liquid-glass flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold text-white transition duration-300 hover:bg-white/10 cursor-pointer"
+                aria-label="Language Selector"
+              >
+                <span className="text-sm leading-none">{currentLangObj.flag}</span>
+                <span className="font-mono uppercase font-bold text-[11px]">
+                  {currentLangObj.code}
+                </span>
                 <svg
-                  className="w-6 h-6 md:w-8 md:h-8 text-white translate-x-0.5"
-                  fill="currentColor"
+                  className={`w-3 h-3 text-white/70 transition-transform duration-200 ${
+                    langDropdownOpen ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
                   viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
                 >
-                  <path d="M8 5v14l11-7z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
-              </div>
-              <span className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-neutral-300 font-mono">
-                {t.hero1.videoPlaceholder}
+              </button>
+
+              {/* Language Dropdown Menu */}
+              {langDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-36 bg-black/90 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  {LANGUAGES.map((lang) => (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      onClick={() => {
+                        setCurrentLang(lang.code);
+                        setLangDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium transition-colors text-left cursor-pointer ${
+                        currentLang === lang.code
+                          ? 'bg-white/20 text-white font-bold'
+                          : 'text-white/70 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <span className="text-sm leading-none">{lang.flag}</span>
+                      <span className="flex-1">{lang.label}</span>
+                      <span className="text-[10px] font-mono text-white/50 uppercase">
+                        {lang.code}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Liquid-Glass Circle Button */}
+            <Magnetic strength={0.35} className="hidden md:inline-block">
+              <a
+                href={`tel:${t.phoneRaw}`}
+                className="liquid-glass h-10 w-10 rounded-full flex items-center justify-center transition duration-300 hover:bg-white/10 cursor-pointer"
+                title={`Обадете се: ${t.phoneDisplay}`}
+              >
+                <CircleUserRound className="h-5 w-5 text-white/80" strokeWidth={1.5} />
+              </a>
+            </Magnetic>
+
+            {/* Mobile Liquid-Glass Circle Button with Animated Icon Swap */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden liquid-glass h-10 w-10 rounded-full flex items-center justify-center z-50 relative cursor-pointer"
+              aria-label="Menu"
+            >
+              <Menu
+                className={`h-5 w-5 text-white transition-all duration-300 absolute ${
+                  menuOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                }`}
+                strokeWidth={1.5}
+              />
+              <X
+                className={`h-5 w-5 text-white transition-all duration-300 absolute ${
+                  menuOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+                }`}
+                strokeWidth={1.5}
+              />
+            </button>
+          </div>
+        </nav>
+
+        {/* MOBILE MENU OVERLAY (z-10, fixed inset-0, md:hidden) */}
+        <div
+          className={`fixed inset-0 z-10 md:hidden bg-black/80 backdrop-blur-xl flex flex-col justify-center items-center transition-opacity duration-500 ease-out ${
+            menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            className={`flex flex-col items-center gap-8 transition-transform duration-500 ease-out ${
+              menuOpen ? 'translate-y-0' : '-translate-y-8'
+            }`}
+          >
+            {navLinks.map((link) => (
+              <button
+                key={link.label}
+                type="button"
+                onClick={() => handleScroll(link.href)}
+                className="text-2xl font-medium text-white hover:text-white/70 transition-colors"
+              >
+                {link.label}
+              </button>
+            ))}
+
+            {/* Language Switcher in Mobile Menu */}
+            <div className="flex items-center gap-2 pt-4">
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => {
+                    setCurrentLang(lang.code);
+                    setMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    currentLang === lang.code
+                      ? 'bg-white text-black'
+                      : 'bg-white/10 text-white/80'
+                  }`}
+                >
+                  <span>{lang.flag}</span>
+                  <span>{lang.code.toUpperCase()}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href={`tel:${t.phoneRaw}`}
+                className="liquid-glass h-10 w-10 rounded-full flex items-center justify-center"
+              >
+                <Phone className="h-4 w-4 text-white/80" />
+              </a>
+              <span className="text-sm font-light text-white/60">
+                {t.phoneDisplay}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Action CTAs & Scroll Link */}
+        {/* MAIN CONTENT (z-10, flex column fills remaining viewport height) */}
         <div
-          style={hero1Reveal.getAnimStyle(3)}
-          className="z-10 flex flex-col sm:flex-row items-center justify-between gap-4 w-full pt-4 border-t border-white/10"
+          className={`relative z-10 flex-1 flex flex-col justify-between px-5 pb-8 sm:px-8 sm:pb-10 md:px-16 lg:px-20 transition-opacity duration-300 ${
+            menuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
         >
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Magnetic strength={0.35}>
-              <a
-                href={`tel:${t.phoneRaw}`}
-                className="w-full sm:w-auto px-7 py-3.5 bg-white text-black font-extrabold uppercase tracking-wider text-xs md:text-sm rounded-full hover:bg-neutral-200 transition-all hover:scale-105 active:scale-95 shadow-lg text-center"
-              >
-                {t.hero1.ctaBook}
-              </a>
-            </Magnetic>
-            <Magnetic strength={0.3}>
-              <a
-                href={`tel:${t.phoneRaw}`}
-                className="hidden sm:inline-block px-5 py-3.5 bg-white/10 hover:bg-white/20 border border-white/15 text-white font-bold text-xs md:text-sm rounded-full transition-all"
-              >
-                {t.hero1.ctaCall}
-              </a>
-            </Magnetic>
+          {/* Top Block (mt-14 sm:mt-20 md:mt-28, max-w-2xl) */}
+          <div className="mt-14 sm:mt-20 md:mt-28 max-w-2xl">
+            {/* 1. Badge — Liquid-Glass Pill with Overlapping Avatars */}
+            <div
+              style={hero1Reveal.getAnimStyle(0)}
+              className="liquid-glass rounded-full inline-flex items-center gap-2.5 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 mb-5 sm:mb-6"
+            >
+              <div className="flex -space-x-2">
+                {AVATARS.map((url, i) => (
+                  <img
+                    key={i}
+                    src={url}
+                    alt="Patient smile"
+                    className="h-5 w-5 sm:h-6 sm:w-6 rounded-full border-2 border-white/20 object-cover"
+                  />
+                ))}
+              </div>
+              <span className="text-xs sm:text-sm font-light text-white/80">
+                {t.hero1.badge}
+              </span>
+            </div>
+
+            {/* 2. Heading */}
+            <div style={hero1Reveal.getAnimStyle(1)}>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.05] text-white tracking-[-0.05em]">
+                {t.hero1.headlinePart1}
+                <br />
+                {t.hero1.headlinePart2}
+              </h1>
+            </div>
+
+            {/* 3. Subtitle */}
+            <div style={hero1Reveal.getAnimStyle(2)}>
+              <p className="mt-4 sm:mt-5 text-sm sm:text-base md:text-lg font-light text-white/70 leading-relaxed max-w-xl">
+                {t.hero1.subtitle}
+              </p>
+            </div>
+
+            {/* 4. CTA Button */}
+            <div style={hero1Reveal.getAnimStyle(3)}>
+              <Magnetic strength={0.35}>
+                <a
+                  href={`tel:${t.phoneRaw}`}
+                  className="liquid-glass rounded-full px-6 py-3 sm:px-7 sm:py-3.5 mt-6 sm:mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition duration-300 hover:bg-white/10 cursor-pointer shadow-lg active:scale-95"
+                >
+                  <span>{t.hero1.cta}</span>
+                  <span>→</span>
+                </a>
+              </Magnetic>
+            </div>
           </div>
 
-          <a
-            href="#hero2"
-            className="text-xs font-mono tracking-wider uppercase text-neutral-400 hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+          {/* BOTTOM STATS (flex, items-end, gap-6 sm:gap-10 md:gap-16) */}
+          <div
+            style={hero1Reveal.getAnimStyle(3)}
+            className="flex items-end gap-6 sm:gap-10 md:gap-16 pt-8 select-none"
           >
-            <span>{t.hero1.scrollDown}</span>
-            <span className="animate-bounce">↓</span>
-          </a>
+            {/* Stat 1: 9 Triangular Dot Pattern Icon */}
+            <div className="flex items-center gap-3">
+              <div className="relative w-5 h-5 flex-shrink-0">
+                <span className="absolute top-0 left-2 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-1 left-1 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-1 left-3 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-2 left-0 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-2 left-2 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-2 left-4 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-3 left-1 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-3 left-3 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+                <span className="absolute top-4 left-2 w-[2.5px] h-[2.5px] bg-white/60 rounded-[0.5px]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg sm:text-2xl md:text-3xl font-normal text-white leading-tight">
+                  {t.hero1.stat1Value}
+                </span>
+                <span className="text-xs sm:text-sm font-light text-white/60">
+                  {t.hero1.stat1Label}
+                </span>
+              </div>
+            </div>
+
+            {/* Stat 2: 3x3 Checkerboard Grid Icon */}
+            <div className="flex items-center gap-3">
+              <div className="grid grid-cols-3 gap-[2px] w-5 h-5 flex-shrink-0">
+                <div className="w-1 h-1 rounded-sm bg-white/60" />
+                <div className="w-1 h-1 rounded-sm bg-white/0" />
+                <div className="w-1 h-1 rounded-sm bg-white/60" />
+                <div className="w-1 h-1 rounded-sm bg-white/0" />
+                <div className="w-1 h-1 rounded-sm bg-white/60" />
+                <div className="w-1 h-1 rounded-sm bg-white/0" />
+                <div className="w-1 h-1 rounded-sm bg-white/60" />
+                <div className="w-1 h-1 rounded-sm bg-white/0" />
+                <div className="w-1 h-1 rounded-sm bg-white/60" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg sm:text-2xl md:text-3xl font-normal text-white leading-tight">
+                  {t.hero1.stat2Value}
+                </span>
+                <span className="text-xs sm:text-sm font-light text-white/60">
+                  {t.hero1.stat2Label}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 2 — HERO 2 (PREVIOUS HERO - MASKED CARDS)                         */}
+      {/* SECTION 2 — HERO 2 (MASKED CARDS WITH 3 BARS + MAIN CARD)                 */}
       {/* ========================================================================= */}
       <section
         ref={(el) => {
@@ -1172,7 +1196,7 @@ export default function App() {
           s2Reveal.containerRef.current = el;
         }}
         id="hero2"
-        className="h-screen w-full overflow-hidden flex flex-col pt-24 md:pt-24 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2 bg-white"
+        className="h-screen w-full overflow-hidden flex flex-col pt-16 md:pt-20 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2 bg-white"
       >
         {/* 3 Feature Bars */}
         {t.hero2.bars.map((text, i) => (
