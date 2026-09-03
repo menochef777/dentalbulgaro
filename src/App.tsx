@@ -779,6 +779,70 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
 };
 
 // ==========================================
+// SAFARI IOS BULLETPROOF VIDEO BACKGROUND
+// ==========================================
+const HeroVideoBackground: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
+
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const unlock = () => {
+            if (videoRef.current) {
+              videoRef.current.play().catch(() => {});
+            }
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+          };
+          window.addEventListener('touchstart', unlock, { once: true });
+          window.addEventListener('click', unlock, { once: true });
+        });
+      }
+    };
+
+    tryPlay();
+    video.addEventListener('canplay', tryPlay);
+    video.addEventListener('loadeddata', tryPlay);
+
+    return () => {
+      video.removeEventListener('canplay', tryPlay);
+      video.removeEventListener('loadeddata', tryPlay);
+    };
+  }, [isMobile]);
+
+  const videoSrc = isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP;
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+      <video
+        key={videoSrc}
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px] pointer-events-none" />
+    </div>
+  );
+};
+
+// ==========================================
 // MAIN APPLICATION COMPONENT
 // ==========================================
 export default function App() {
@@ -859,33 +923,8 @@ export default function App() {
         id="hero1"
         className="relative h-screen w-full overflow-hidden flex flex-col justify-between"
       >
-        {/* Full-viewport Autoplaying Looping Muted PlaysInline Video Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          {/* Desktop Video (16:9) */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="hidden md:block absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={VIDEO_DESKTOP} type="video/mp4" />
-          </video>
-
-          {/* Mobile Video (9:16) */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="block md:hidden absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={VIDEO_MOBILE} type="video/mp4" />
-          </video>
-
-          {/* Liquid dark subtle film overlay */}
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px] pointer-events-none" />
-        </div>
+        {/* Full-viewport Autoplaying Looping Muted PlaysInline Video Background (Safari iOS Optimized) */}
+        <HeroVideoBackground isMobile={isMobile} />
 
         {/* NAVIGATION (z-20, top) */}
         <nav className="relative z-20 flex items-center justify-between px-5 pt-6 sm:px-8 sm:pt-8 md:px-16 lg:px-20 select-none">
