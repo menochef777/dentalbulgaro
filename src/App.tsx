@@ -10,7 +10,7 @@ const PHONE_DISPLAY = '088 497 0607';
 const PHONE_RAW = '0884970607';
 
 // ==========================================
-// IMAGE URLS (High-end Dental Practice Visuals)
+// IMAGE URLS (High-end Dental Visuals)
 // ==========================================
 const HERO_IMAGE =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_113640_ccf3cf97-d447-425b-a134-d7b09fc743fc.png&w=1280&q=85';
@@ -27,21 +27,23 @@ const SECTION3_BG =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114355_752ba9e6-0942-4abb-9047-5d9bb16632e9.png&w=1280&q=85';
 
 // ==========================================
-// CONTENT CONSTANTS (100% Verified Information)
+// CONTENT CONSTANTS (100% Verified from OLX)
 // ==========================================
 const featureBars = ['Внимателен подход', 'Прецизно лечение', 'Спокойна обстановка'];
 
+// Primary 4 Service Sub-Cards
 const services = [
-  { name: 'Профилактични\nпрегледи', num: '01', active: true },
-  { name: 'Лечение на\nкариес', num: '02', active: false },
+  { name: 'Профилактични\nпрегледи и\nконсултации', num: '01', active: true },
+  { name: 'Лечение на\nкариес и\nусложнения', num: '02', active: false },
   { name: 'Естетични\nвъзстановявания', num: '03', active: false },
   { name: 'Детска дентална\nмедицина', num: '04', active: false },
 ];
 
+// Additional 3 Verified Services
 const additionalServices = [
   'Лечение на частично и тотално обеззъбяване',
   'Почистване на зъбен камък',
-  'Грижа за бъдещи мами',
+  'Грижа за бъдещите мами',
 ];
 
 // ==========================================
@@ -299,8 +301,8 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { label: 'Начало', href: '#hero' },
     { label: 'Услуги', href: '#services' },
-    { label: 'Подход', href: '#treatment' },
-    { label: 'Контакти', href: '#treatment' },
+    { label: 'Подход', href: '#approach' },
+    { label: 'Контакти', href: '#approach' },
   ];
 
   const handleScroll = (href: string) => {
@@ -349,7 +351,7 @@ const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle Menu"
+            aria-label="Отвори меню"
             className="w-10 h-10 flex items-center justify-center relative cursor-pointer"
           >
             <span
@@ -473,7 +475,7 @@ export default function App() {
       <Navbar />
 
       {/* ========================================================================= */}
-      {/* SECTION 1 - HERO                                                          */}
+      {/* SECTION 1 — HERO                                                          */}
       {/* ========================================================================= */}
       <section
         ref={(el) => {
@@ -517,11 +519,9 @@ export default function App() {
           style={s1Reveal.getAnimStyle(3)}
           className="w-full flex-1 min-h-0 rounded-xl md:rounded-2xl overflow-hidden relative shadow-sm"
         >
-          {/* Top-left text */}
-          <div className="absolute top-4 left-4 md:top-7 md:left-7 text-black text-xs md:text-sm font-semibold leading-4 md:leading-5 max-w-[220px] md:max-w-[320px] z-10">
-            Съвременна дентална грижа
-            <br />
-            с внимание към всеки пациент.
+          {/* Top-left supporting text */}
+          <div className="absolute top-4 left-4 md:top-7 md:left-7 text-black text-xs md:text-sm font-semibold leading-4 md:leading-5 max-w-[240px] md:max-w-[340px] z-10">
+            Индивидуален подход и съвременно дентално лечение в спокойна и комфортна обстановка.
           </div>
 
           {/* Bottom-left block */}
@@ -529,20 +529,20 @@ export default function App() {
             <span className="block text-black text-xs md:text-sm font-semibold mb-1 md:mb-2">
               Зъболекар във Варна
             </span>
-            <h1 className="text-black text-[clamp(3rem,11vw,11rem)] font-bold leading-[0.79] tracking-tight">
-              Дентална
+            <h1 className="text-black text-[clamp(2.8rem,9.5vw,9.5rem)] font-bold leading-[0.82] tracking-tight">
+              Внимателна грижа.
               <br />
-              грижа
+              Прецизно лечение.
             </h1>
-            <p className="text-black/80 text-[11px] md:text-xs font-medium mt-2 max-w-[280px] md:max-w-[380px]">
-              Индивидуален подход и прецизно лечение във Варна.
+            <p className="text-black/80 text-[11px] md:text-xs font-medium mt-2 max-w-[300px] md:max-w-[420px] leading-relaxed">
+              Търсите внимателен и прецизен зъболекар във Варна? Предлагам индивидуален подход и съвременно стоматологично лечение.
             </p>
           </div>
 
           {/* Bottom-right CTA */}
           <a
             href={`tel:${PHONE_RAW}`}
-            className="absolute bottom-6 right-4 md:bottom-10 md:right-8 text-white text-xs md:text-sm font-semibold z-10 hover:underline hover:scale-105 transition-transform"
+            className="absolute bottom-6 right-4 md:bottom-10 md:right-8 text-white text-xs md:text-sm font-semibold z-10 hover:underline hover:scale-105 transition-transform bg-black/40 md:bg-transparent px-3 py-1.5 md:p-0 rounded-full md:rounded-none backdrop-blur-sm md:backdrop-blur-none"
           >
             Запишете час
           </a>
@@ -550,7 +550,7 @@ export default function App() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 2 - SERVICES / DENTAL CARE                                        */}
+      {/* SECTION 2 — SERVICES / DENTAL CARE                                        */}
       {/* ========================================================================= */}
       <section
         ref={(el) => {
@@ -625,7 +625,7 @@ export default function App() {
             </h2>
           </MaskedCard>
 
-          {/* Card 3 - Bottom Full Width (Services) */}
+          {/* Card 3 - Bottom Full Width (7 Services Total) */}
           <MaskedCard
             bgImage={SECTION2_IMAGE}
             position={s2Mask.positions[3]}
@@ -635,10 +635,10 @@ export default function App() {
               s2CardRefs.current[3] = el;
             }}
             style={s2Reveal.getAnimStyle(3)}
-            className="col-span-1 md:col-span-2 rounded-xl md:rounded-2xl overflow-hidden relative min-h-[220px] md:min-h-0 shadow-sm"
+            className="col-span-1 md:col-span-2 rounded-xl md:rounded-2xl overflow-hidden relative min-h-[240px] md:min-h-0 shadow-sm"
           >
             <div className="absolute inset-0 z-10 flex flex-col justify-between p-2 md:p-3">
-              {/* 4 Primary Service Cards */}
+              {/* 4 Primary Service Sub-Cards */}
               <div className="flex flex-wrap md:flex-nowrap gap-1.5 md:gap-2 flex-1">
                 {services.map((svc) => (
                   <div
@@ -650,7 +650,7 @@ export default function App() {
                     }`}
                   >
                     <h3
-                      className={`text-base sm:text-lg md:text-3xl font-bold leading-[1.08] whitespace-pre-line ${
+                      className={`text-sm sm:text-base md:text-2xl font-bold leading-[1.12] whitespace-pre-line ${
                         svc.active ? 'text-black' : 'text-white'
                       }`}
                     >
@@ -659,7 +659,7 @@ export default function App() {
 
                     {svc.num && (
                       <div
-                        className={`self-end w-7 h-7 md:w-11 md:h-11 rounded-full border flex items-center justify-center text-xs md:text-sm font-semibold mt-2 ${
+                        className={`self-end w-7 h-7 md:w-10 md:h-10 rounded-full border flex items-center justify-center text-xs md:text-sm font-semibold mt-2 ${
                           svc.active
                             ? 'border-black text-black'
                             : 'border-white text-white'
@@ -672,11 +672,20 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Supporting Verified Services Badge Strip */}
-              <div className="mt-1 px-3 py-1.5 rounded-lg bg-black/40 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 text-[10px] md:text-xs font-semibold text-white/90">
-                <span>• {additionalServices[0]}</span>
-                <span>• {additionalServices[1]}</span>
-                <span>• {additionalServices[2]}</span>
+              {/* 3 Additional Verified Services Strip */}
+              <div className="mt-1 px-3 py-2 rounded-xl bg-black/50 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 text-[10.5px] md:text-xs font-semibold text-white/95">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                  05. {additionalServices[0]}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                  06. {additionalServices[1]}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                  07. {additionalServices[2]}
+                </span>
               </div>
             </div>
           </MaskedCard>
@@ -684,13 +693,13 @@ export default function App() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 3 - DENTAL TREATMENT & CONSULTATION                               */}
+      {/* SECTION 3 — APPROACH & CONSULTATION                                       */}
       {/* ========================================================================= */}
       <section
         ref={(el) => {
           s3Reveal.containerRef.current = el;
         }}
-        id="treatment"
+        id="approach"
         className="min-h-screen md:h-screen w-full overflow-hidden flex flex-col pt-1.5 md:pt-2 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2"
       >
         <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2">
@@ -701,13 +710,13 @@ export default function App() {
               style={s3Reveal.getAnimStyle(0)}
               className="rounded-xl md:rounded-2xl bg-stone-50 p-5 md:p-7 flex flex-col justify-between flex-[1.2] min-h-[180px] md:min-h-0 shadow-sm"
             >
-              <h2 className="text-[clamp(3rem,7vw,6.5rem)] font-bold leading-[0.95] text-black">
-                Дентално
+              <h2 className="text-[clamp(2.8rem,6.5vw,6rem)] font-bold leading-[0.95] text-black">
+                Индивидуален
                 <br />
-                лечение
+                подход
               </h2>
               <p className="text-xs md:text-sm font-semibold text-black mt-4">
-                Индивидуален подход към всеки пациент
+                Прецизност и внимание към детайла
               </p>
             </div>
 
@@ -720,7 +729,7 @@ export default function App() {
               <div className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group">
                 <img
                   src={SECTION3_IMG1}
-                  alt="Клиничен резултат преди и след"
+                  alt="Клиничен резултат преди и след естетично възстановяване"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -730,7 +739,7 @@ export default function App() {
               <div className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group">
                 <img
                   src={SECTION3_IMG2}
-                  alt="Стоматологичен кабинет"
+                  alt="Стоматологичен кабинет във Варна"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -777,7 +786,17 @@ export default function App() {
               loading="lazy"
             />
 
-            {/* Overlay Container */}
+            {/* Final Contact Statement Banner on Top of Image */}
+            <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-6 bg-black/60 backdrop-blur-md rounded-xl p-4 text-white z-10 border border-white/10">
+              <span className="text-[10px] font-mono tracking-widest text-neutral-300 uppercase block mb-1">
+                {LOCATION} • {PHONE_DISPLAY}
+              </span>
+              <p className="text-xs md:text-sm font-bold leading-snug">
+                Запишете час за консултация и се погрижете навреме за усмивката си.
+              </p>
+            </div>
+
+            {/* Overlay Container Bottom */}
             <div className="absolute bottom-3 left-3 right-3 md:bottom-5 md:left-5 md:right-5 flex gap-1.5 md:gap-2">
               {/* Overlay Card 1 (White, Left) */}
               <div className="flex-1 bg-white rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md">
