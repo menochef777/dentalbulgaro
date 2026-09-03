@@ -433,15 +433,18 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
 // CUSTOM HOOKS
 // ==========================================
 function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)');
-    setIsMobile(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
   return isMobile;
@@ -778,65 +781,83 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
   );
 };
 
+const POSTER_DESKTOP = '/imgs/poster169.webp';
+const POSTER_MOBILE = '/imgs/poster916.webp';
+
 // ==========================================
 // SAFARI IOS BULLETPROOF VIDEO BACKGROUND
 // ==========================================
-const HeroVideoBackground: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+const HeroVideoBackground: React.FC = () => {
+  const desktopRef = useRef<HTMLVideoElement | null>(null);
+  const mobileRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const playVideo = (v: HTMLVideoElement | null) => {
+      if (!v) return;
+      v.defaultMuted = true;
+      v.muted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', 'true');
+      v.setAttribute('webkit-playsinline', 'true');
 
-    video.defaultMuted = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.setAttribute('playsinline', 'true');
-    video.setAttribute('webkit-playsinline', 'true');
+      const attempt = () => {
+        v.play().catch(() => {});
+      };
 
-    const tryPlay = () => {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const unlock = () => {
-            if (videoRef.current) {
-              videoRef.current.play().catch(() => {});
-            }
-            window.removeEventListener('touchstart', unlock);
-            window.removeEventListener('click', unlock);
-          };
-          window.addEventListener('touchstart', unlock, { once: true });
-          window.addEventListener('click', unlock, { once: true });
-        });
-      }
+      attempt();
+      v.addEventListener('loadedmetadata', attempt);
+      v.addEventListener('canplay', attempt);
+      v.addEventListener('loadeddata', attempt);
     };
 
-    tryPlay();
-    video.addEventListener('canplay', tryPlay);
-    video.addEventListener('loadeddata', tryPlay);
+    playVideo(desktopRef.current);
+    playVideo(mobileRef.current);
+
+    // Global touch / click fallback to immediately start video if iOS Low Power Mode is on
+    const unlockAll = () => {
+      if (desktopRef.current) desktopRef.current.play().catch(() => {});
+      if (mobileRef.current) mobileRef.current.play().catch(() => {});
+    };
+
+    window.addEventListener('touchstart', unlockAll, { passive: true });
+    window.addEventListener('click', unlockAll, { passive: true });
+    window.addEventListener('scroll', unlockAll, { passive: true, once: true });
 
     return () => {
-      video.removeEventListener('canplay', tryPlay);
-      video.removeEventListener('loadeddata', tryPlay);
+      window.removeEventListener('touchstart', unlockAll);
+      window.removeEventListener('click', unlockAll);
     };
-  }, [isMobile]);
-
-  const videoSrc = isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP;
+  }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+      {/* Desktop Video (16:9) */}
       <video
-        key={videoSrc}
-        ref={videoRef}
+        ref={desktopRef}
+        src={VIDEO_DESKTOP}
+        poster={POSTER_DESKTOP}
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
+        className="hidden md:block absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Mobile Video (9:16) */}
+      <video
+        ref={mobileRef}
+        src={VIDEO_MOBILE}
+        poster={POSTER_MOBILE}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="block md:hidden absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Liquid dark subtle film overlay */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px] pointer-events-none" />
     </div>
   );
@@ -924,7 +945,7 @@ export default function App() {
         className="relative h-screen w-full overflow-hidden flex flex-col justify-between"
       >
         {/* Full-viewport Autoplaying Looping Muted PlaysInline Video Background (Safari iOS Optimized) */}
-        <HeroVideoBackground isMobile={isMobile} />
+        <HeroVideoBackground />
 
         {/* NAVIGATION (z-20, top) */}
         <nav className="relative z-20 flex items-center justify-between px-5 pt-6 sm:px-8 sm:pt-8 md:px-16 lg:px-20 select-none">
