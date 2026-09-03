@@ -930,23 +930,23 @@ export default function App() {
           s3Reveal.containerRef.current = el;
         }}
         id="approach"
-        className="min-h-screen md:h-screen w-full overflow-hidden flex flex-col pt-1.5 md:pt-2 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2"
+        className="min-h-screen md:h-screen w-full overflow-y-auto md:overflow-hidden flex flex-col pt-2 md:pt-2 px-3 md:px-5 pb-20 md:pb-2 gap-2 md:gap-2"
       >
-        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2">
+        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2">
           {/* LEFT COLUMN */}
-          <div className="flex flex-col gap-1.5 md:gap-2 h-full">
+          <div className="flex flex-col gap-2 md:gap-2 h-full">
             {/* 1. Heading Card with Spotlight */}
             <SpotlightCard
               spotlightColor="rgba(0, 0, 0, 0.05)"
               style={s3Reveal.getAnimStyle(0)}
-              className="rounded-xl md:rounded-2xl bg-stone-50 p-5 md:p-7 flex flex-col justify-between flex-[1.2] min-h-[180px] md:min-h-0 shadow-sm"
+              className="rounded-xl md:rounded-2xl bg-stone-50 p-5 sm:p-6 md:p-7 flex flex-col justify-between flex-[1.1] min-h-[160px] md:min-h-0 shadow-sm border border-black/5"
             >
-              <h2 className="text-[clamp(2.8rem,6.5vw,6rem)] font-bold leading-[0.95] text-black">
+              <h2 className="text-[clamp(2.4rem,5.5vw,5.5rem)] font-bold leading-[0.95] text-black">
                 Индивидуален
                 <br />
                 подход
               </h2>
-              <p className="text-xs md:text-sm font-semibold text-black mt-4">
+              <p className="text-xs md:text-sm font-semibold text-black/80 mt-3">
                 Прецизност и внимание към детайла
               </p>
             </SpotlightCard>
@@ -954,12 +954,12 @@ export default function App() {
             {/* 2. Two Image Cards (Side by Side) */}
             <div
               style={s3Reveal.getAnimStyle(1)}
-              className="flex gap-1.5 md:gap-2 flex-1 min-h-[140px] md:min-h-0"
+              className="flex gap-2 md:gap-2 flex-1 min-h-[140px] md:min-h-0"
             >
-              {/* Left Image: Real Clinical Before/After Case with Spotlight */}
+              {/* Left Image: Real Clinical Before/After Case */}
               <SpotlightCard
-                spotlightColor="rgba(255, 255, 255, 0.2)"
-                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group"
+                spotlightColor="rgba(255, 255, 255, 0.25)"
+                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-900 shadow-sm relative group border border-black/5"
               >
                 <img
                   src={SECTION3_IMG1}
@@ -969,10 +969,10 @@ export default function App() {
                 />
               </SpotlightCard>
 
-              {/* Right Image: Dental Environment with Spotlight */}
+              {/* Right Image: Dental Environment */}
               <SpotlightCard
-                spotlightColor="rgba(255, 255, 255, 0.2)"
-                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group"
+                spotlightColor="rgba(255, 255, 255, 0.25)"
+                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-900 shadow-sm relative group border border-black/5"
               >
                 <img
                   src={SECTION3_IMG2}
@@ -983,41 +983,38 @@ export default function App() {
               </SpotlightCard>
             </div>
 
-            {/* 3. Consultation Card with Spotlight */}
+            {/* 3. Consultation Card with Highly Visible Button */}
             <SpotlightCard
-              spotlightColor="rgba(0, 0, 0, 0.06)"
+              spotlightColor="rgba(0, 0, 0, 0.08)"
               style={s3Reveal.getAnimStyle(2)}
-              className="rounded-xl md:rounded-2xl bg-zinc-200 p-5 md:p-7 flex items-end justify-between flex-[0.8] min-h-[160px] md:min-h-0 shadow-sm"
+              className="rounded-xl md:rounded-2xl bg-zinc-200 p-5 sm:p-6 md:p-7 flex flex-col sm:flex-row sm:items-end justify-between gap-4 flex-[0.9] min-h-[160px] md:min-h-0 shadow-sm border border-black/5"
             >
               <div className="flex flex-col">
-                <p className="text-xs md:text-sm font-semibold text-black mb-2 md:mb-3">
+                <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-black/70 mb-1 md:mb-2">
                   Консултация
-                </p>
-                <h3 className="text-xl md:text-3xl font-bold text-black leading-6 md:leading-8">
-                  Ясно
+                </span>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black leading-tight">
+                  Ясно обяснение.
                   <br />
-                  обяснение.
-                  <br />
-                  Прецизно
-                  <br />
-                  лечение.
+                  Прецизно лечение.
                 </h3>
               </div>
-              <Magnetic strength={0.35}>
+              <Magnetic strength={0.35} className="shrink-0">
                 <a
                   href={`tel:${PHONE_RAW}`}
-                  className="px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold hover:scale-105 transition-transform cursor-pointer shadow-md shrink-0 inline-block text-center"
+                  className="w-full sm:w-auto px-6 py-3 sm:px-7 sm:py-4 md:px-8 md:py-4 bg-black text-white rounded-full text-sm sm:text-base md:text-lg font-bold hover:bg-neutral-800 transition-all cursor-pointer shadow-lg inline-flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
                 >
-                  Запишете час
+                  <span>Запишете час</span>
+                  <span>→</span>
                 </a>
               </Magnetic>
             </SpotlightCard>
           </div>
 
-          {/* RIGHT COLUMN: Single tall image card */}
+          {/* RIGHT COLUMN: Single tall image card with clear overlays */}
           <div
             style={s3Reveal.getAnimStyle(3)}
-            className="rounded-xl md:rounded-2xl overflow-hidden relative min-h-[350px] md:min-h-0 shadow-sm bg-neutral-100"
+            className="rounded-xl md:rounded-2xl overflow-hidden relative min-h-[420px] md:min-h-0 shadow-sm bg-neutral-900 border border-black/5"
           >
             <img
               src={SECTION3_BG}
@@ -1026,90 +1023,90 @@ export default function App() {
               loading="lazy"
             />
 
-            {/* Final Contact Statement Banner on Top of Image */}
-            <div className="absolute top-4 left-4 right-4 md:top-6 md:left-6 md:right-6 bg-black/60 backdrop-blur-md rounded-xl p-4 text-white z-10 border border-white/10">
-              <span className="text-[10px] font-mono tracking-widest text-neutral-300 uppercase block mb-1">
+            {/* Top Info Banner */}
+            <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 bg-black/75 backdrop-blur-md rounded-xl p-3.5 sm:p-4 text-white z-10 border border-white/15 shadow-lg">
+              <span className="text-[10px] sm:text-xs font-mono tracking-widest text-neutral-300 uppercase block mb-1">
                 {LOCATION} • {PHONE_DISPLAY}
               </span>
-              <p className="text-xs md:text-sm font-bold leading-snug">
+              <p className="text-xs sm:text-sm font-bold leading-snug">
                 Запишете час за консултация и се погрижете навреме за усмивката си.
               </p>
             </div>
 
-            {/* Overlay Container Bottom with Spotlight Cards */}
-            <div className="absolute bottom-3 left-3 right-3 md:bottom-5 md:left-5 md:right-5 flex gap-1.5 md:gap-2">
+            {/* Overlay Cards Bottom */}
+            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex gap-2 md:gap-2">
               {/* Overlay Card 1 (White, Left) */}
-              <SpotlightCard
-                spotlightColor="rgba(0, 0, 0, 0.08)"
-                className="flex-1 bg-white rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md"
+              <a
+                href={`tel:${PHONE_RAW}`}
+                className="flex-1 bg-white hover:bg-neutral-100 rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-5 flex flex-col justify-between h-28 sm:h-36 md:h-48 shadow-xl transition-all hover:scale-[1.02] border border-black/5 group cursor-pointer"
               >
-                <h4 className="text-lg md:text-2xl font-bold text-black leading-5 md:leading-7">
+                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-black leading-tight">
                   Вашето
                   <br />
                   лечение
                 </h4>
-                <div className="self-end w-9 h-9 md:w-12 md:h-12 rounded-full border border-black flex items-center justify-center">
+                <div className="self-end w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg
-                    width="14"
-                    height="14"
+                    width="12"
+                    height="12"
                     viewBox="0 0 14 14"
                     fill="none"
-                    className="rotate-[-45deg]"
+                    className="rotate-[-45deg] sm:w-3.5 sm:h-3.5"
                   >
                     <path
                       d="M1 7h12m0 0L8 2m5 5L8 12"
                       stroke="currentColor"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
                 </div>
-              </SpotlightCard>
+              </a>
 
               {/* Overlay Card 2 (Glass, Right) */}
-              <SpotlightCard
-                spotlightColor="rgba(255, 255, 255, 0.3)"
-                className="flex-1 bg-white/20 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md"
+              <a
+                href={`tel:${PHONE_RAW}`}
+                className="flex-1 bg-black/60 hover:bg-black/75 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-5 flex flex-col justify-between h-28 sm:h-36 md:h-48 shadow-xl transition-all hover:scale-[1.02] border border-white/20 group cursor-pointer"
               >
-                <h4 className="text-lg md:text-2xl font-bold text-white leading-5 md:leading-7">
+                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-white leading-tight">
                   Грижа за
                   <br />
                   усмивката
                 </h4>
-                <div className="self-end w-9 h-9 md:w-12 md:h-12 rounded-full border border-white flex items-center justify-center text-white">
+                <div className="self-end w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg
-                    width="14"
-                    height="14"
+                    width="12"
+                    height="12"
                     viewBox="0 0 14 14"
                     fill="none"
-                    className="rotate-[-45deg]"
+                    className="rotate-[-45deg] sm:w-3.5 sm:h-3.5"
                   >
                     <path
                       d="M1 7h12m0 0L8 2m5 5L8 12"
                       stroke="currentColor"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
                 </div>
-              </SpotlightCard>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* FLOATING CALL BUTTON WITH MAGNETIC REACTION */}
-      <Magnetic strength={0.4} className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
+      <Magnetic strength={0.4} className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         <a
           id="floating-call-btn"
           href={`tel:${PHONE_RAW}`}
           aria-label={`Обадете се: ${PHONE_DISPLAY}`}
-          className="flex items-center gap-2.5 px-4 py-2.5 md:px-5 md:py-3 rounded-full bg-black text-white hover:bg-neutral-800 shadow-[0_12px_32px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
+          className="flex items-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3 md:px-5 md:py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/25"
         >
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -1121,7 +1118,7 @@ export default function App() {
               d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
             />
           </svg>
-          <span className="text-xs md:text-sm font-bold tracking-wider whitespace-nowrap">
+          <span className="text-xs sm:text-sm font-bold tracking-wider whitespace-nowrap">
             {PHONE_DISPLAY}
           </span>
         </a>
