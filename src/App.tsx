@@ -309,24 +309,24 @@ const VIDEO_DESKTOP = '/imgs/vid169.mp4';
 const VIDEO_MOBILE = '/imgs/vid916.mp4';
 
 const HERO_IMAGE =
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_113640_ccf3cf97-d447-425b-a134-d7b09fc743fc.png&w=1280&q=85';
+  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_113640_ccf3cf97-d447-425b-a134-d7b09fc743fc.png&w=800&q=80';
 
 const SECTION2_IMAGE =
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114219_414dfe80-f15c-4e25-bf52-b13721f4bd88.png&w=1280&q=85';
+  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114219_414dfe80-f15c-4e25-bf52-b13721f4bd88.png&w=800&q=80';
 
 const SECTION3_IMG1 = '/images/clinical_before_after.webp';
 
 const SECTION3_IMG2 =
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_115237_fc519057-6e87-4abf-999a-9610b8b085b4.png&w=1280&q=85';
+  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_115237_fc519057-6e87-4abf-999a-9610b8b085b4.png&w=480&q=80';
 
 const SECTION3_BG =
-  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114355_752ba9e6-0942-4abb-9047-5d9bb16632e9.png&w=1280&q=85';
+  'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114355_752ba9e6-0942-4abb-9047-5d9bb16632e9.png&w=640&q=80';
 
 const AVATARS = [
-  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=100',
+  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=80',
+  'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=80',
+  'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=80',
+  'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=80',
 ];
 
 // ==========================================
@@ -508,23 +508,25 @@ function useMaskPositions(
   };
 
   useLayoutEffect(() => {
+    let animId: number;
+    const scheduleCalc = () => {
+      cancelAnimationFrame(animId);
+      animId = requestAnimationFrame(calculatePositions);
+    };
+
     calculatePositions();
 
     const section = sectionRef.current;
     if (!section) return;
 
-    const ro = new ResizeObserver(() => {
-      calculatePositions();
-    });
-
+    const ro = new ResizeObserver(scheduleCalc);
     ro.observe(section);
-    window.addEventListener('resize', calculatePositions);
-    window.addEventListener('scroll', calculatePositions);
+    window.addEventListener('resize', scheduleCalc);
 
     return () => {
+      cancelAnimationFrame(animId);
       ro.disconnect();
-      window.removeEventListener('resize', calculatePositions);
-      window.removeEventListener('scroll', calculatePositions);
+      window.removeEventListener('resize', scheduleCalc);
     };
   }, [sectionRef, cardRefs]);
 
@@ -842,7 +844,9 @@ const HeroVideoBackground: React.FC = () => {
         playsInline
         preload="auto"
         className="hidden md:block absolute inset-0 w-full h-full object-cover"
-      />
+      >
+        <track kind="captions" src="data:text/vtt,WEBVTT" label="Ambient video" default />
+      </video>
 
       {/* Mobile Video (9:16) */}
       <video
@@ -855,7 +859,9 @@ const HeroVideoBackground: React.FC = () => {
         playsInline
         preload="auto"
         className="block md:hidden absolute inset-0 w-full h-full object-cover"
-      />
+      >
+        <track kind="captions" src="data:text/vtt,WEBVTT" label="Ambient video" default />
+      </video>
 
       {/* Liquid dark subtle film overlay */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px] pointer-events-none" />
@@ -1043,10 +1049,11 @@ export default function App() {
               )}
             </div>
 
-            {/* Desktop Liquid-Glass Circle Button */}
+            {/* Desktop Liquid-Glass Circle Button with aria-label */}
             <Magnetic strength={0.35} className="hidden md:inline-block">
               <a
                 href={`tel:${t.phoneRaw}`}
+                aria-label={`Обадете се на зъболекар ${t.brandName}: ${t.phoneDisplay}`}
                 className="liquid-glass h-10 w-10 rounded-full flex items-center justify-center transition duration-300 hover:bg-white/10 cursor-pointer"
                 title={`Обадете се: ${t.phoneDisplay}`}
               >
@@ -1124,6 +1131,7 @@ export default function App() {
             <div className="flex items-center gap-3 pt-2">
               <a
                 href={`tel:${t.phoneRaw}`}
+                aria-label={`Обадете се на зъболекар ${t.brandName}: ${t.phoneDisplay}`}
                 className="liquid-glass h-10 w-10 rounded-full flex items-center justify-center"
               >
                 <Phone className="h-4 w-4 text-white/80" />
@@ -1154,7 +1162,10 @@ export default function App() {
                     key={i}
                     src={url}
                     alt="Patient smile"
+                    width={24}
+                    height={24}
                     className="h-5 w-5 sm:h-6 sm:w-6 rounded-full border-2 border-white/20 object-cover"
+                    loading="eager"
                   />
                 ))}
               </div>
@@ -1500,6 +1511,8 @@ export default function App() {
                 <img
                   src={SECTION3_IMG1}
                   alt="Clinical result before and after"
+                  width={640}
+                  height={698}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -1512,6 +1525,8 @@ export default function App() {
                 <img
                   src={SECTION3_IMG2}
                   alt="Dental clinic practice"
+                  width={480}
+                  height={380}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -1552,6 +1567,8 @@ export default function App() {
             <img
               src={SECTION3_BG}
               alt="Smiling patient"
+              width={640}
+              height={960}
               className="w-full h-full object-cover"
               loading="lazy"
             />
