@@ -36,8 +36,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       title: isBg ? 'ПЪЛНА ПРОТЕЗА' : p.card1.title || 'FULL DENTURE',
       price: '€350',
       period: isBg ? '/ протеза' : '/ denture',
-      image: '/images/smile_senior_full_denture.jpg',
-      imageAlt: 'Natural Confident Smile — Full Denture',
+      image: '/images/pricing_full_denture.jpg',
+      imageAlt: 'Complete Dental Prosthesis — Full Acrylic & Ceramic Denture',
       desc: isBg
         ? 'Пълна плакова протеза, изработена в частна лаборатория с индивидуален анатомичен профил.'
         : 'Full acrylic denture crafted with custom anatomical profile.',
@@ -51,8 +51,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       title: isBg ? 'ЧАСТИЧНА ПРОТЕЗА' : p.card2.title || 'PARTIAL DENTURE',
       price: '€300',
       period: isBg ? '/ протеза' : '/ denture',
-      image: '/images/smile_woman_partial_denture.jpg',
-      imageAlt: 'Radiant Confident Smile — Partial Denture',
+      image: '/images/pricing_partial_denture.jpg',
+      imageAlt: 'Partial Dental Prosthesis — Precision Fit',
       desc: isBg
         ? 'Частична протеза за прецизно възстановяване на дъвкателната функция и естетика.'
         : 'Partial denture for precise restoration of function and aesthetics.',
@@ -63,12 +63,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     },
     {
       category: isBg ? 'УСЛУГИ' : p.card3.category || 'SERVICES',
-      title: isBg ? 'ПОПРАВКА / ЗЪБ' : p.card3.title || 'REPAIR / TOOTH',
+      title: isBg ? 'ПОПРАВКА' : p.card3.title || 'REPAIR',
       price: '€60',
-      priceSubtitle: isBg ? 'Поправка: €60  •  Зъб: €50' : 'Repair: €60  •  Tooth: €50',
-      period: isBg ? 'от' : 'from',
-      image: '/images/dental_masterpiece_craft.jpg',
-      imageAlt: 'Exquisite Dental Craftsmanship & Restoration',
+      priceSubtitle: isBg ? 'ПОСТАВЯНЕ НА ЗЪБ — €50' : (p.card3.additionalService || 'TOOTH PLACEMENT — €50'),
+      period: isBg ? '' : '',
+      image: '/images/pricing_technician_repair.jpg',
+      imageAlt: 'Dental Technician Precision Repair and Tooth Restoration',
       desc: isBg
         ? 'Експресна поправка на счупена протеза или прецизно поставяне на нов зъб.'
         : 'Express repair of damaged dentures or precise tooth addition.',

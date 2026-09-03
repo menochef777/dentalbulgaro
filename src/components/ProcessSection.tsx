@@ -167,7 +167,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
               {...getStaggerVariants(7)}
               className="sticky top-28 relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/5] rounded-[24px] bg-[#080a12]/85 text-[#F3F0E9] p-6 sm:p-8 flex flex-col justify-between overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.18)] border border-white/[0.18] backdrop-blur-3xl"
             >
-              {/* If step 4 (Finished Prosthesis) is active, show video loop in background */}
+              {/* Dynamic stage background: Laboratory imagery for steps 1-3, 360 video for step 4 */}
               {activeStep === 3 ? (
                 <video
                   src="/videos/dental169.mp4"
@@ -177,7 +177,19 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover object-center opacity-70 pointer-events-none"
                 />
-              ) : null}
+              ) : (
+                <img
+                  src={
+                    activeStep === 0
+                      ? '/images/pricing_technician_repair.jpg'
+                      : activeStep === 1
+                      ? '/images/pricing_partial_denture.jpg'
+                      : '/images/pricing_full_denture.jpg'
+                  }
+                  alt="Laboratory craftsmanship stage"
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-35 filter brightness-85 contrast-110 pointer-events-none transition-all duration-700"
+                />
+              )}
 
               {/* Internal technical texture and subtle backlight */}
               <div className="absolute inset-0 bg-subtle-grain opacity-40 pointer-events-none z-10" />
