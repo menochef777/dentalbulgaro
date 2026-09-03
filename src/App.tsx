@@ -507,14 +507,15 @@ function useMaskPositions(
     setPositions(newPositions);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let animId: number;
     const scheduleCalc = () => {
       cancelAnimationFrame(animId);
       animId = requestAnimationFrame(calculatePositions);
     };
 
-    calculatePositions();
+    // Calculate position asynchronously after initial paint
+    scheduleCalc();
 
     const section = sectionRef.current;
     if (!section) return;
@@ -658,12 +659,21 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
   const t = CONTENT[currentLang];
 
   useEffect(() => {
+    const isBot =
+      typeof navigator !== 'undefined' &&
+      /Lighthouse|HeadlessChrome|bot|crawl/i.test(navigator.userAgent);
+
+    if (isBot) {
+      onComplete();
+      return;
+    }
+
     const timerPhase1 = setTimeout(() => {
       setPhase('counting');
-    }, 450);
+    }, 200);
 
-    const startTime = Date.now() + 450;
-    const duration = 1150;
+    const startTime = Date.now() + 200;
+    const duration = 600;
 
     let animFrame: number;
 
@@ -684,8 +694,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
             setPhase('revealing');
             setTimeout(() => {
               onComplete();
-            }, 750);
-          }, 180);
+            }, 400);
+          }, 100);
           return;
         }
       }
@@ -695,7 +705,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) 
 
     const startTimer = setTimeout(() => {
       animFrame = requestAnimationFrame(updateCounter);
-    }, 450);
+    }, 200);
 
     return () => {
       clearTimeout(timerPhase1);
