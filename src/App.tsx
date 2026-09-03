@@ -47,6 +47,107 @@ const additionalServices = [
 ];
 
 // ==========================================
+// REACT BITS: MAGNETIC COMPONENT
+// ==========================================
+interface MagneticProps {
+  children: React.ReactElement;
+  strength?: number;
+  className?: string;
+}
+
+const Magnetic: React.FC<MagneticProps> = ({
+  children,
+  strength = 0.35,
+  className = '',
+}) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    const moveX = (clientX - centerX) * strength;
+    const moveY = (clientY - centerY) * strength;
+    setPosition({ x: moveX, y: moveY });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`inline-block transition-transform duration-200 ease-out will-change-transform ${className}`}
+      style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+// ==========================================
+// REACT BITS: SPOTLIGHT CARD COMPONENT
+// ==========================================
+interface SpotlightCardProps {
+  children?: React.ReactNode;
+  className?: string;
+  spotlightColor?: string;
+  style?: React.CSSProperties;
+  cardRef?: (el: HTMLElement | null) => void;
+}
+
+const SpotlightCard: React.FC<SpotlightCardProps> = ({
+  children,
+  className = '',
+  spotlightColor = 'rgba(255, 255, 255, 0.18)',
+  style = {},
+  cardRef,
+}) => {
+  const localRef = useRef<HTMLDivElement | null>(null);
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!localRef.current) return;
+    const rect = localRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <div
+      ref={(el) => {
+        localRef.current = el;
+        if (cardRef) cardRef(el);
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative overflow-hidden group ${className}`}
+      style={style}
+    >
+      {/* React Bits Radial Spotlight Cursor Follower */}
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          background: `radial-gradient(450px circle at ${mousePos.x}px ${mousePos.y}px, ${spotlightColor}, transparent 80%)`,
+        }}
+      />
+      {children}
+    </div>
+  );
+};
+
+// ==========================================
 // CUSTOM HOOKS
 // ==========================================
 
@@ -182,7 +283,7 @@ function useStaggeredReveal(count: number, threshold = 0.15) {
 }
 
 // ==========================================
-// MASKED CARD COMPONENT
+// MASKED CARD WITH SPOTLIGHT EFFECT
 // ==========================================
 interface MaskedCardProps {
   bgImage: string;
@@ -193,6 +294,7 @@ interface MaskedCardProps {
   children?: React.ReactNode;
   cardRef?: (el: HTMLElement | null) => void;
   style?: React.CSSProperties;
+  spotlightColor?: string;
 }
 
 const MaskedCard: React.FC<MaskedCardProps> = ({
@@ -204,7 +306,12 @@ const MaskedCard: React.FC<MaskedCardProps> = ({
   children,
   cardRef,
   style = {},
+  spotlightColor = 'rgba(255, 255, 255, 0.16)',
 }) => {
+  const innerRef = useRef<HTMLDivElement | null>(null);
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const [isHovered, setIsHovered] = useState(false);
+
   let maskStyle: React.CSSProperties = {};
 
   if (position && position.sh > 0) {
@@ -219,15 +326,38 @@ const MaskedCard: React.FC<MaskedCardProps> = ({
     };
   }
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!innerRef.current) return;
+    const rect = innerRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   return (
     <div
-      ref={cardRef}
-      className={className}
+      ref={(el) => {
+        innerRef.current = el;
+        if (cardRef) cardRef(el);
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative group overflow-hidden ${className}`}
       style={{
         ...maskStyle,
         ...style,
       }}
     >
+      {/* React Bits Spotlight Layer */}
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          background: `radial-gradient(420px circle at ${mousePos.x}px ${mousePos.y}px, ${spotlightColor}, transparent 80%)`,
+        }}
+      />
       {children}
     </div>
   );
@@ -245,14 +375,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    // Phase 1: 0.0s -> 0.5s: Subtle editorial entrance
     const timerPhase1 = setTimeout(() => {
       setPhase('counting');
     }, 450);
 
-    // Phase 2: 0.5s -> 1.6s: Smooth high-speed interpolation counter
     const startTime = Date.now() + 450;
-    const duration = 1150; // 1.15s counter duration
+    const duration = 1150;
 
     let animFrame: number;
 
@@ -262,7 +390,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
       if (elapsed > 0) {
         const progress = Math.min(1, elapsed / duration);
-        // Smooth exponential ease-out
         const easeVal = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         const currentCount = Math.floor(easeVal * 100);
         setCount(currentCount);
@@ -270,7 +397,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         if (progress >= 1) {
           setCount(100);
           setPhase('completed');
-          // Phase 3 & 4: Hold 180ms at 100, then trigger cinematic curtain reveal
           setTimeout(() => {
             setPhase('revealing');
             setTimeout(() => {
@@ -338,9 +464,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
         <p
           className={`text-xs sm:text-sm font-medium text-neutral-500 max-w-xs sm:max-w-md mt-4 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            phase === 'enter'
-              ? 'opacity-0 translate-y-4'
-              : 'opacity-100 translate-y-0'
+            phase === 'enter' ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}
         >
           Индивидуален подход и съвременно дентално лечение
@@ -349,7 +473,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
       {/* Bottom Bar: Large Speedometer Counter + Status */}
       <div className="flex items-end justify-between w-full pt-4">
-        {/* Huge High-speed Numerical Indicator */}
         <div
           className={`flex items-baseline gap-1 font-bold tabular-nums tracking-tighter leading-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             phase === 'enter' ? 'opacity-0 translate-y-6' : 'opacity-100 translate-y-0'
@@ -363,7 +486,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           </span>
         </div>
 
-        {/* Editorial Sub-Status Indicator */}
         <div
           className={`flex flex-col items-end text-right transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             phase === 'enter' ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'
@@ -382,7 +504,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 };
 
 // ==========================================
-// NAVBAR COMPONENT
+// NAVBAR WITH REACT BITS MAGNETIC & PILLNAV
 // ==========================================
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -415,35 +537,42 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-6 py-2 md:py-3 bg-white/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-6 py-2.5 md:py-3.5 bg-white/85 backdrop-blur-md border-b border-neutral-100 transition-all">
         {/* Logo Left */}
-        <div className="flex flex-col select-none">
-          <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black">
-            {DOCTOR_NAME}
-          </div>
-          <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black -mt-1.5 md:-mt-2">
-            {PROFESSION}
-          </div>
-          <span className="text-[8px] md:text-[9px] font-medium leading-none mt-1.5 md:mt-2 text-neutral-600 uppercase tracking-wider">
-            {LOCATION}
-          </span>
-        </div>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <a
-            href={`tel:${PHONE_RAW}`}
-            className="text-sm font-semibold text-black hover:text-neutral-600 transition-colors"
-          >
-            Запишете час
+        <Magnetic strength={0.25}>
+          <a href="#hero" className="flex flex-col select-none group cursor-pointer">
+            <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black group-hover:text-neutral-700 transition-colors">
+              {DOCTOR_NAME}
+            </div>
+            <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black -mt-1.5 md:-mt-2 group-hover:text-neutral-700 transition-colors">
+              {PROFESSION}
+            </div>
+            <span className="text-[8px] md:text-[9px] font-medium leading-none mt-1.5 md:mt-2 text-neutral-600 uppercase tracking-wider">
+              {LOCATION}
+            </span>
           </a>
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            className="px-6 py-3 bg-white rounded-full border border-black text-sm font-semibold text-black hover:bg-black hover:text-white transition-colors duration-200 cursor-pointer"
-          >
-            Menu
-          </button>
+        </Magnetic>
+
+        {/* Desktop Nav with Magnetic Buttons */}
+        <div className="hidden md:flex items-center gap-6">
+          <Magnetic strength={0.3}>
+            <a
+              href={`tel:${PHONE_RAW}`}
+              className="text-sm font-semibold text-black hover:text-neutral-600 transition-colors px-3 py-1.5 rounded-full hover:bg-neutral-100"
+            >
+              Запишете час
+            </a>
+          </Magnetic>
+
+          <Magnetic strength={0.4}>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              className="px-6 py-3 bg-white rounded-full border border-black text-sm font-semibold text-black hover:bg-black hover:text-white transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+            >
+              Menu
+            </button>
+          </Magnetic>
         </div>
 
         {/* Mobile Hamburger */}
@@ -500,9 +629,7 @@ const Navbar: React.FC = () => {
                 type="button"
                 onClick={() => handleScroll(item.href)}
                 className={`text-left text-3xl font-bold text-black hover:text-neutral-500 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] cursor-pointer ${
-                  menuOpen
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 translate-x-8'
+                  menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
                 }`}
                 style={{
                   transitionDelay: menuOpen ? `${100 + i * 60}ms` : '0ms',
@@ -514,9 +641,7 @@ const Navbar: React.FC = () => {
 
             <div
               className={`mt-8 pt-8 border-t border-neutral-200 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                menuOpen
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 translate-x-8'
+                menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
               }`}
               style={{
                 transitionDelay: menuOpen ? '450ms' : '0ms',
@@ -528,7 +653,7 @@ const Navbar: React.FC = () => {
               <a
                 href={`tel:${PHONE_RAW}`}
                 onClick={() => setMenuOpen(false)}
-                className="block w-full px-6 py-4 bg-black rounded-full text-white text-sm font-semibold hover:bg-neutral-800 transition-colors duration-200 text-center"
+                className="block w-full px-6 py-4 bg-black rounded-full text-white text-sm font-semibold hover:bg-neutral-800 transition-colors duration-200 text-center shadow-md"
               >
                 Запишете час
               </a>
@@ -640,12 +765,14 @@ export default function App() {
           </div>
 
           {/* Bottom-right CTA */}
-          <a
-            href={`tel:${PHONE_RAW}`}
-            className="absolute bottom-6 right-4 md:bottom-10 md:right-8 text-white text-xs md:text-sm font-semibold z-10 hover:underline hover:scale-105 transition-transform bg-black/40 md:bg-transparent px-3 py-1.5 md:p-0 rounded-full md:rounded-none backdrop-blur-sm md:backdrop-blur-none"
-          >
-            Запишете час
-          </a>
+          <Magnetic strength={0.3} className="absolute bottom-6 right-4 md:bottom-10 md:right-8 z-10">
+            <a
+              href={`tel:${PHONE_RAW}`}
+              className="text-white text-xs md:text-sm font-semibold hover:underline transition-all bg-black/40 md:bg-transparent px-3 py-1.5 md:p-0 rounded-full md:rounded-none backdrop-blur-sm md:backdrop-blur-none inline-block"
+            >
+              Запишете час
+            </a>
+          </Magnetic>
         </MaskedCard>
       </section>
 
@@ -696,12 +823,14 @@ export default function App() {
             <div className="absolute bottom-16 left-5 md:bottom-20 md:left-7 text-white text-xs md:text-sm font-semibold leading-4 md:leading-5 z-10 max-w-[320px] md:max-w-[420px]">
               Работя с внимание към детайла и се стремя всеки пациент да получи ясно обяснение за състоянието си и възможните варианти за лечение.
             </div>
-            <a
-              href={`tel:${PHONE_RAW}`}
-              className="absolute bottom-4 right-4 md:bottom-6 md:right-6 px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold z-10 hover:scale-105 transition-transform cursor-pointer shadow-md inline-block"
-            >
-              Обадете се
-            </a>
+            <Magnetic strength={0.3} className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10">
+              <a
+                href={`tel:${PHONE_RAW}`}
+                className="px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold hover:scale-105 transition-transform cursor-pointer shadow-md inline-block"
+              >
+                Обадете се
+              </a>
+            </Magnetic>
           </MaskedCard>
 
           {/* Card 2 - Bottom Left ("Грижа за вашата усмивка") */}
@@ -738,11 +867,12 @@ export default function App() {
             className="col-span-1 md:col-span-2 rounded-xl md:rounded-2xl overflow-hidden relative min-h-[240px] md:min-h-0 shadow-sm"
           >
             <div className="absolute inset-0 z-10 flex flex-col justify-between p-2 md:p-3">
-              {/* 4 Primary Service Sub-Cards */}
+              {/* 4 Primary Service Sub-Cards with Spotlight */}
               <div className="flex flex-wrap md:flex-nowrap gap-1.5 md:gap-2 flex-1">
                 {services.map((svc) => (
-                  <div
+                  <SpotlightCard
                     key={svc.name}
+                    spotlightColor={svc.active ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.25)'}
                     className={`flex-1 min-w-[calc(50%-4px)] md:min-w-0 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between ${
                       svc.active
                         ? 'bg-white/90 backdrop-blur-md shadow-md'
@@ -768,7 +898,7 @@ export default function App() {
                         {svc.num}
                       </div>
                     )}
-                  </div>
+                  </SpotlightCard>
                 ))}
               </div>
 
@@ -805,8 +935,9 @@ export default function App() {
         <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2">
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-1.5 md:gap-2 h-full">
-            {/* 1. Heading Card */}
-            <div
+            {/* 1. Heading Card with Spotlight */}
+            <SpotlightCard
+              spotlightColor="rgba(0, 0, 0, 0.05)"
               style={s3Reveal.getAnimStyle(0)}
               className="rounded-xl md:rounded-2xl bg-stone-50 p-5 md:p-7 flex flex-col justify-between flex-[1.2] min-h-[180px] md:min-h-0 shadow-sm"
             >
@@ -818,36 +949,43 @@ export default function App() {
               <p className="text-xs md:text-sm font-semibold text-black mt-4">
                 Прецизност и внимание към детайла
               </p>
-            </div>
+            </SpotlightCard>
 
             {/* 2. Two Image Cards (Side by Side) */}
             <div
               style={s3Reveal.getAnimStyle(1)}
               className="flex gap-1.5 md:gap-2 flex-1 min-h-[140px] md:min-h-0"
             >
-              {/* Left Image: Real Clinical Before/After Case */}
-              <div className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group">
+              {/* Left Image: Real Clinical Before/After Case with Spotlight */}
+              <SpotlightCard
+                spotlightColor="rgba(255, 255, 255, 0.2)"
+                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group"
+              >
                 <img
                   src={SECTION3_IMG1}
                   alt="Клиничен резултат преди и след естетично възстановяване"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
-              </div>
+              </SpotlightCard>
 
-              {/* Right Image: Dental Environment */}
-              <div className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group">
+              {/* Right Image: Dental Environment with Spotlight */}
+              <SpotlightCard
+                spotlightColor="rgba(255, 255, 255, 0.2)"
+                className="flex-1 rounded-xl md:rounded-2xl overflow-hidden bg-neutral-100 shadow-sm relative group"
+              >
                 <img
                   src={SECTION3_IMG2}
                   alt="Стоматологичен кабинет във Варна"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
-              </div>
+              </SpotlightCard>
             </div>
 
-            {/* 3. Consultation Card */}
-            <div
+            {/* 3. Consultation Card with Spotlight */}
+            <SpotlightCard
+              spotlightColor="rgba(0, 0, 0, 0.06)"
               style={s3Reveal.getAnimStyle(2)}
               className="rounded-xl md:rounded-2xl bg-zinc-200 p-5 md:p-7 flex items-end justify-between flex-[0.8] min-h-[160px] md:min-h-0 shadow-sm"
             >
@@ -865,13 +1003,15 @@ export default function App() {
                   лечение.
                 </h3>
               </div>
-              <a
-                href={`tel:${PHONE_RAW}`}
-                className="px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold hover:scale-105 transition-transform cursor-pointer shadow-md shrink-0 inline-block text-center"
-              >
-                Запишете час
-              </a>
-            </div>
+              <Magnetic strength={0.35}>
+                <a
+                  href={`tel:${PHONE_RAW}`}
+                  className="px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold hover:scale-105 transition-transform cursor-pointer shadow-md shrink-0 inline-block text-center"
+                >
+                  Запишете час
+                </a>
+              </Magnetic>
+            </SpotlightCard>
           </div>
 
           {/* RIGHT COLUMN: Single tall image card */}
@@ -896,10 +1036,13 @@ export default function App() {
               </p>
             </div>
 
-            {/* Overlay Container Bottom */}
+            {/* Overlay Container Bottom with Spotlight Cards */}
             <div className="absolute bottom-3 left-3 right-3 md:bottom-5 md:left-5 md:right-5 flex gap-1.5 md:gap-2">
               {/* Overlay Card 1 (White, Left) */}
-              <div className="flex-1 bg-white rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md">
+              <SpotlightCard
+                spotlightColor="rgba(0, 0, 0, 0.08)"
+                className="flex-1 bg-white rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md"
+              >
                 <h4 className="text-lg md:text-2xl font-bold text-black leading-5 md:leading-7">
                   Вашето
                   <br />
@@ -922,10 +1065,13 @@ export default function App() {
                     />
                   </svg>
                 </div>
-              </div>
+              </SpotlightCard>
 
               {/* Overlay Card 2 (Glass, Right) */}
-              <div className="flex-1 bg-white/20 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md">
+              <SpotlightCard
+                spotlightColor="rgba(255, 255, 255, 0.3)"
+                className="flex-1 bg-white/20 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between h-36 md:h-52 shadow-md"
+              >
                 <h4 className="text-lg md:text-2xl font-bold text-white leading-5 md:leading-7">
                   Грижа за
                   <br />
@@ -948,36 +1094,38 @@ export default function App() {
                     />
                   </svg>
                 </div>
-              </div>
+              </SpotlightCard>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FLOATING CALL BUTTON (Fixed bottom right) */}
-      <a
-        id="floating-call-btn"
-        href={`tel:${PHONE_RAW}`}
-        aria-label={`Обадете се: ${PHONE_DISPLAY}`}
-        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 flex items-center gap-2.5 px-4 py-2.5 md:px-5 md:py-3 rounded-full bg-black text-white hover:bg-neutral-800 shadow-[0_12px_32px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
-      >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2.2"
+      {/* FLOATING CALL BUTTON WITH MAGNETIC REACTION */}
+      <Magnetic strength={0.4} className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40">
+        <a
+          id="floating-call-btn"
+          href={`tel:${PHONE_RAW}`}
+          aria-label={`Обадете се: ${PHONE_DISPLAY}`}
+          className="flex items-center gap-2.5 px-4 py-2.5 md:px-5 md:py-3 rounded-full bg-black text-white hover:bg-neutral-800 shadow-[0_12px_32px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-          />
-        </svg>
-        <span className="text-xs md:text-sm font-bold tracking-wider whitespace-nowrap">
-          {PHONE_DISPLAY}
-        </span>
-      </a>
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2.2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+            />
+          </svg>
+          <span className="text-xs md:text-sm font-bold tracking-wider whitespace-nowrap">
+            {PHONE_DISPLAY}
+          </span>
+        </a>
+      </Magnetic>
     </div>
   );
 }
