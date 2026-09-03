@@ -112,7 +112,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         </div>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN: Real Google Maps Panel (Styled Monochrome / Dark)          */}
+        {/* RIGHT COLUMN: Ultra-fast Zero-Freeze Dark Editorial Map Card              */}
         {/* ========================================================================= */}
         <motion.div
           {...getStaggerVariants(4)}
@@ -127,17 +127,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             <span>BLAGOEVGRAD / BG</span>
           </div>
 
-          {/* Maps Framed Container — Lightweight & Safe for Mobile Gestures */}
-          <div className="relative w-full h-[290px] sm:h-[330px] lg:h-[400px] rounded-[24px] border border-white/[0.18] bg-[#080a12] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-xl">
+          {/* Maps Framed Container — 100% Freeze-Free & Ultra-Fast Native Card */}
+          <a
+            href="https://maps.google.com/?q=Alen+Mak,+Blagoevgrad,+Bulgaria"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Отвори локацията в Google Maps"
+            className="group relative w-full h-[290px] sm:h-[330px] lg:h-[400px] rounded-[24px] border border-white/[0.18] bg-[#080a12] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.15)] flex flex-col justify-between p-6 sm:p-8 cursor-pointer transition-all duration-300 hover:border-white/[0.35]"
+          >
+            {/* Styled Architectural Grid / Dark Map Visual */}
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.12)_0%,transparent_75%)] pointer-events-none" />
             
-            {/* Real Google Maps Embed with pointer-events-none on mobile so scrolling never freezes */}
-            <iframe
-              title="Google Maps Location - Alen Mak, Blagoevgrad"
-              src={googleMapsEmbedUrl}
-              className="w-full h-full border-0 filter grayscale invert contrast-[0.9] opacity-80 pointer-events-none sm:pointer-events-auto"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            {/* Ambient vector route lines */}
+            <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M-50 150 Q 150 80 350 200 T 700 120" fill="none" stroke="#A6B09F" strokeWidth="1.5" strokeDasharray="4 6" />
+              <path d="M100 -20 Q 200 180 250 400" fill="none" stroke="#FFFFFF" strokeWidth="1" strokeOpacity="0.4" />
+              <path d="M-20 300 L 500 80" fill="none" stroke="#FFFFFF" strokeWidth="1" strokeOpacity="0.2" />
+            </svg>
 
             {/* Corner Registration Marks */}
             <div className="absolute top-3 left-3 text-[10px] font-mono text-[#666666] select-none pointer-events-none">┌</div>
@@ -145,17 +152,45 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             <div className="absolute bottom-3 left-3 text-[10px] font-mono text-[#666666] select-none pointer-events-none">└</div>
             <div className="absolute bottom-3 right-3 text-[10px] font-mono text-[#666666] select-none pointer-events-none">┘</div>
 
-            {/* Floating Open in Google Maps Link */}
-            <a
-              href={googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 bg-[#050505]/95 hover:bg-black text-[#F3F0E9] hover:text-[#A6B09F] text-[10px] font-mono tracking-wider uppercase px-3.5 py-2 rounded-full border border-white/[0.25] backdrop-blur-md transition-all shadow-xl group pointer-events-auto cursor-pointer"
-            >
-              <span>{isBg ? 'ОТВОРИ В GOOGLE MAPS' : 'OPEN IN GOOGLE MAPS'}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 stroke-[2.2]" />
-            </a>
-          </div>
+            {/* Top Card Info */}
+            <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                <span className="w-2 h-2 rounded-full bg-[#A6B09F] animate-ping" />
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#F3F0E9] uppercase">
+                  42.0209° N, 23.0943° E
+                </span>
+              </div>
+              <span className="text-[10px] font-mono tracking-widest text-[#92918C] uppercase">
+                BLAGOEVGRAD
+              </span>
+            </div>
+
+            {/* Center Beacon & Pin */}
+            <div className="relative z-10 my-auto flex flex-col items-center justify-center text-center">
+              <div className="relative w-16 h-16 rounded-full bg-[#A6B09F]/10 border border-[#A6B09F]/30 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="absolute inset-0 rounded-full bg-[#A6B09F]/20 animate-ping" />
+                <MapPin className="w-7 h-7 text-[#A6B09F] relative z-10 drop-shadow-[0_0_12px_rgba(166,176,159,0.8)]" />
+              </div>
+              <span className="font-condensed font-extrabold uppercase text-[20px] sm:text-[22px] tracking-tight text-[#F3F0E9]">
+                RADI LABORATORY
+              </span>
+              <span className="font-mono text-[11px] text-[#A6B09F] tracking-wider uppercase mt-0.5">
+                КВ. АЛЕН МАК, БЛАГОЕВГРАД
+              </span>
+            </div>
+
+            {/* Bottom Card Action Link */}
+            <div className="relative z-10 flex items-center justify-between pt-3 border-t border-white/[0.1]">
+              <span className="text-[10px] font-mono tracking-wider text-[#92918C] uppercase">
+                {isBg ? 'НАВИГАЦИЯ & КАРТА' : 'MAP & DIRECTIONS'}
+              </span>
+
+              <div className="inline-flex items-center gap-2 bg-[#F3F0E9] group-hover:bg-white text-[#050505] text-[10.5px] font-mono font-bold tracking-wider uppercase px-4 py-2 rounded-full transition-all shadow-xl group-hover:scale-105">
+                <span>{isBg ? 'ОТВОРИ В GOOGLE MAPS' : 'OPEN IN GOOGLE MAPS'}</span>
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 stroke-[2.4]" />
+              </div>
+            </div>
+          </a>
 
           {/* Sub-label below map */}
           <div className="flex items-center justify-between text-[9.5px] font-mono tracking-[0.18em] text-[#92918C] uppercase pt-3">
