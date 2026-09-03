@@ -1,13 +1,257 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 // ==========================================
-// BUSINESS DATA CONSTANTS (Д-р Дариа — Варна)
+// TYPES & LANGUAGES (BG, EN, TR, RO)
 // ==========================================
-const DOCTOR_NAME = 'Дариа';
-const PROFESSION = 'Зъболекар';
-const LOCATION = 'Варна, България';
-const PHONE_DISPLAY = '088 497 0607';
-const PHONE_RAW = '0884970607';
+type Language = 'bg' | 'en' | 'tr' | 'ro';
+
+interface LanguageOption {
+  code: Language;
+  label: string;
+  flag: string;
+}
+
+const LANGUAGES: LanguageOption[] = [
+  { code: 'bg', label: 'Български', flag: '🇧🇬' },
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'tr', label: 'Türkçe', flag: '🇹🇷' },
+  { code: 'ro', label: 'Română', flag: '🇷🇴' },
+];
+
+const CONTENT = {
+  bg: {
+    brandName: 'Дариа',
+    profession: 'Зъболекар',
+    location: 'Варна, България',
+    phoneDisplay: '088 497 0607',
+    phoneRaw: '0884970607',
+    nav: {
+      home: 'Начало',
+      services: 'Услуги',
+      approach: 'Подход',
+      contact: 'Контакти',
+      bookCta: 'Запишете час',
+    },
+    hero: {
+      bars: ['Внимателен подход', 'Прецизно лечение', 'Спокойна обстановка'],
+      tag: 'Зъболекар във Варна',
+      topSupporting: 'Индивидуален подход и съвременно дентално лечение в спокойна и комфортна обстановка.',
+      headlinePart1: 'Внимателна грижа.',
+      headlinePart2: 'Прецизно лечение.',
+      bottomSupporting: 'Търсите внимателен и прецизен зъболекар във Варна? Предлагам индивидуален подход и съвременно стоматологично лечение.',
+      cta: 'Запишете час',
+    },
+    section2: {
+      card0Title: 'Дентална грижа',
+      card0Subtitle: 'Професионално лечение с индивидуален подход',
+      card1Text: 'Работя с внимание към детайла и се стремя всеки пациент да получи ясно обяснение за състоянието си и възможните варианти за лечение.',
+      card1Cta: 'Обадете се',
+      card2Headline: 'Грижа за\nвашата\nусмивка',
+      services: [
+        { name: 'Профилактични\nпрегледи и\nконсултации', num: '01', active: true },
+        { name: 'Лечение на\nкариес и\nусложнения', num: '02', active: false },
+        { name: 'Естетични\nвъзстановявания', num: '03', active: false },
+        { name: 'Детска дентална\nмедицина', num: '04', active: false },
+      ],
+      additionalServices: [
+        'Лечение на частично и тотално обеззъбяване',
+        'Почистване на зъбен камък',
+        'Грижа за бъдещите мами',
+      ],
+    },
+    section3: {
+      approachTitle: 'Индивидуален\nподход',
+      approachSubtitle: 'Прецизност и внимание към детайла',
+      consultationTag: 'Консултация',
+      consultationHeadline: 'Ясно обяснение.\nПрецизно лечение.',
+      consultationCta: 'Запишете час',
+      bannerText: 'Запишете час за консултация и се погрижете навреме за усмивката си.',
+      overlay1: 'Вашето\nлечение',
+      overlay2: 'Грижа за\nусмивката',
+    },
+    intro: {
+      brand: 'Дариа • Стоматология',
+      desc: 'Индивидуален подход и съвременно дентално лечение',
+      status: 'Статус',
+      loading: 'Зареждане',
+      ready: 'Готово',
+    },
+  },
+  en: {
+    brandName: 'Daria',
+    profession: 'Dentist',
+    location: 'Varna, Bulgaria',
+    phoneDisplay: '088 497 0607',
+    phoneRaw: '0884970607',
+    nav: {
+      home: 'Home',
+      services: 'Services',
+      approach: 'Approach',
+      contact: 'Contact',
+      bookCta: 'Book an Appointment',
+    },
+    hero: {
+      bars: ['Attentive Approach', 'Precise Treatment', 'Calm Atmosphere'],
+      tag: 'Dentist in Varna',
+      topSupporting: 'Individual approach and modern dental care in a calm, comfortable environment.',
+      headlinePart1: 'Attentive Care.',
+      headlinePart2: 'Precise Treatment.',
+      bottomSupporting: 'Looking for an attentive and precise dentist in Varna? I offer an individual approach and modern dentistry.',
+      cta: 'Book Appointment',
+    },
+    section2: {
+      card0Title: 'Dental Care',
+      card0Subtitle: 'Professional treatment with an individual approach',
+      card1Text: 'I work with meticulous attention to detail and ensure every patient receives a clear explanation of their condition and treatment options.',
+      card1Cta: 'Call Us',
+      card2Headline: 'Care for\nYour\nSmile',
+      services: [
+        { name: 'Preventive\ncheckups &\nconsultations', num: '01', active: true },
+        { name: 'Caries treatment\n& restoration', num: '02', active: false },
+        { name: 'Aesthetic\nrestorations', num: '03', active: false },
+        { name: 'Pediatric\ndentistry', num: '04', active: false },
+      ],
+      additionalServices: [
+        'Partial and complete tooth loss treatment',
+        'Dental calculus scaling & polishing',
+        'Care for expectant mothers',
+      ],
+    },
+    section3: {
+      approachTitle: 'Individual\nApproach',
+      approachSubtitle: 'Precision and attention to detail',
+      consultationTag: 'Consultation',
+      consultationHeadline: 'Clear explanation.\nPrecise treatment.',
+      consultationCta: 'Book Appointment',
+      bannerText: 'Book a consultation and take care of your smile in time.',
+      overlay1: 'Your\nTreatment',
+      overlay2: 'Smile\nCare',
+    },
+    intro: {
+      brand: 'Daria • Dentistry',
+      desc: 'Individual approach and modern dental care',
+      status: 'Status',
+      loading: 'Loading',
+      ready: 'Ready',
+    },
+  },
+  tr: {
+    brandName: 'Daria',
+    profession: 'Diş Hekimi',
+    location: 'Varna, Bulgaristan',
+    phoneDisplay: '088 497 0607',
+    phoneRaw: '0884970607',
+    nav: {
+      home: 'Ana Sayfa',
+      services: 'Hizmetler',
+      approach: 'Yaklaşım',
+      contact: 'İletişim',
+      bookCta: 'Randevu Alın',
+    },
+    hero: {
+      bars: ['Özenli Yaklaşım', 'Hassas Tedavi', 'Huzurlu Ortam'],
+      tag: "Varna'da Diş Hekimi",
+      topSupporting: 'Huzurlu ve konforlu bir ortamda kişiye özel yaklaşım ve modern diş tedavisi.',
+      headlinePart1: 'Özenli Bakım.',
+      headlinePart2: 'Hassas Tedavi.',
+      bottomSupporting: "Varna'da özenli ve hassas bir diş hekimi mi arıyorsunuz? Kişiye özel yaklaşım ve modern tedavi sunuyorum.",
+      cta: 'Randevu Alın',
+    },
+    section2: {
+      card0Title: 'Diş Bakımı',
+      card0Subtitle: 'Kişiye özel yaklaşımla profesyonel tedavi',
+      card1Text: 'Detaylara özen göstererek çalışıyor ve her hastanın durumu ile olası tedavi seçenekleri hakkında net bilgi almasını sağlıyorum.',
+      card1Cta: 'Bizi Arayın',
+      card2Headline: 'Gülüşünüz\nİçin\nÖzen',
+      services: [
+        { name: 'Önleyici\nmuayene ve\ndanışmanlık', num: '01', active: true },
+        { name: 'Çürük tedavisi\nve dolgu\nişlemleri', num: '02', active: false },
+        { name: 'Estetik\ndiş restorasyonu', num: '03', active: false },
+        { name: 'Çocuk diş\nhekimliği', num: '04', active: false },
+      ],
+      additionalServices: [
+        'Kısmi ve tam dişsizlik tedavisi',
+        'Diş taşı temizliği ve parlatma',
+        'Anne adayları için özel bakım',
+      ],
+    },
+    section3: {
+      approachTitle: 'Kişiye Özel\nYaklaşım',
+      approachSubtitle: 'Hassasiyet ve detaylara özen',
+      consultationTag: 'Danışmanlık',
+      consultationHeadline: 'Net açıklama.\nHassas tedavi.',
+      consultationCta: 'Randevu Alın',
+      bannerText: 'Danışmanlık randevunuzu alın ve gülüşünüze zamanında özen gösterin.',
+      overlay1: 'Tedavi\nSüreci',
+      overlay2: 'Gülüş\nBakımı',
+    },
+    intro: {
+      brand: 'Daria • Diş Hekimliği',
+      desc: 'Kişiye özel yaklaşım ve modern diş tedavisi',
+      status: 'Durum',
+      loading: 'Yükleniyor',
+      ready: 'Hazır',
+    },
+  },
+  ro: {
+    brandName: 'Daria',
+    profession: 'Medic Stomatolog',
+    location: 'Varna, Bulgaria',
+    phoneDisplay: '088 497 0607',
+    phoneRaw: '0884970607',
+    nav: {
+      home: 'Acasă',
+      services: 'Servicii',
+      approach: 'Abordare',
+      contact: 'Contact',
+      bookCta: 'Programare',
+    },
+    hero: {
+      bars: ['Abordare atentă', 'Tratament precis', 'Atmosferă calmă'],
+      tag: 'Medic Stomatolog în Varna',
+      topSupporting: 'Abordare individuală și tratamente stomatologice moderne într-o atmosferă calmă și confortabilă.',
+      headlinePart1: 'Îngrijire atentă.',
+      headlinePart2: 'Tratament precis.',
+      bottomSupporting: 'Căutați un medic stomatolog atent și precis în Varna? Ofer abordare individualizată și tratamente moderne.',
+      cta: 'Programare',
+    },
+    section2: {
+      card0Title: 'Îngrijire Dentară',
+      card0Subtitle: 'Tratament profesional cu abordare individuală',
+      card1Text: 'Lucrez cu atenție meticuloasă la detalii și mă asigur că fiecare pacient primește o explicație clară a stării sale și a opțiunilor de tratament.',
+      card1Cta: 'Sunați-ne',
+      card2Headline: 'Grijă pentru\nzâmbetul\ndvs.',
+      services: [
+        { name: 'Consultații și\ncontroale\nprofilactice', num: '01', active: true },
+        { name: 'Tratamentul\ncariilor și\ncomplicațiilor', num: '02', active: false },
+        { name: 'Restaurări\nestetice', num: '03', active: false },
+        { name: 'Stomatologie\npediatrică', num: '04', active: false },
+      ],
+      additionalServices: [
+        'Tratamentul edentației parțiale și totale',
+        'Detartraj și igienizare profesională',
+        'Îngrijire pentru viitoarele mămici',
+      ],
+    },
+    section3: {
+      approachTitle: 'Abordare\nIndividuală',
+      approachSubtitle: 'Precizie și atenție la detalii',
+      consultationTag: 'Consultație',
+      consultationHeadline: 'Explicație clară.\nTratament precis.',
+      consultationCta: 'Programare',
+      bannerText: 'Programați o consultație și aveți grijă din timp de zâmbetul dumneavoastră.',
+      overlay1: 'Tratamentul\nDvs.',
+      overlay2: 'Îngrijirea\nZâmbetului',
+    },
+    intro: {
+      brand: 'Daria • Stomatologie',
+      desc: 'Abordare individuală și tratamente stomatologice moderne',
+      status: 'Status',
+      loading: 'Se încarcă',
+      ready: 'Gata',
+    },
+  },
+};
 
 // ==========================================
 // IMAGE URLS (High-end Dental Visuals)
@@ -25,26 +269,6 @@ const SECTION3_IMG2 =
 
 const SECTION3_BG =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260624_114355_752ba9e6-0942-4abb-9047-5d9bb16632e9.png&w=1280&q=85';
-
-// ==========================================
-// CONTENT CONSTANTS (100% Verified from OLX)
-// ==========================================
-const featureBars = ['Внимателен подход', 'Прецизно лечение', 'Спокойна обстановка'];
-
-// Primary 4 Service Sub-Cards
-const services = [
-  { name: 'Профилактични\nпрегледи и\nконсултации', num: '01', active: true },
-  { name: 'Лечение на\nкариес и\nусложнения', num: '02', active: false },
-  { name: 'Естетични\nвъзстановявания', num: '03', active: false },
-  { name: 'Детска дентална\nмедицина', num: '04', active: false },
-];
-
-// Additional 3 Verified Services
-const additionalServices = [
-  'Лечение на частично и тотално обеззъбяване',
-  'Почистване на зъбен камък',
-  'Грижа за бъдещите мами',
-];
 
 // ==========================================
 // REACT BITS: MAGNETIC COMPONENT
@@ -134,7 +358,6 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       className={`relative overflow-hidden group ${className}`}
       style={style}
     >
-      {/* React Bits Radial Spotlight Cursor Follower */}
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
         style={{
@@ -150,8 +373,6 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
 // ==========================================
 // CUSTOM HOOKS
 // ==========================================
-
-// 1. useIsMobile
 function useIsMobile(): boolean {
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -167,7 +388,6 @@ function useIsMobile(): boolean {
   return isMobile;
 }
 
-// 2. useImageWidth
 function useImageWidth(bgImage: string, sectionHeight: number): number {
   const [imageWidth, setImageWidth] = useState<number>(0);
 
@@ -187,7 +407,6 @@ function useImageWidth(bgImage: string, sectionHeight: number): number {
   return imageWidth;
 }
 
-// 3. useMaskPositions
 interface CardPosition {
   x: number;
   y: number;
@@ -250,7 +469,6 @@ function useMaskPositions(
   return { positions, sectionHeight };
 }
 
-// 4. useStaggeredReveal
 function useStaggeredReveal(count: number, threshold = 0.15) {
   const containerRef = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -350,7 +568,6 @@ const MaskedCard: React.FC<MaskedCardProps> = ({
         ...style,
       }}
     >
-      {/* React Bits Spotlight Layer */}
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
         style={{
@@ -368,11 +585,13 @@ const MaskedCard: React.FC<MaskedCardProps> = ({
 // ==========================================
 interface SplashScreenProps {
   onComplete: () => void;
+  currentLang: Language;
 }
 
-const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
+const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, currentLang }) => {
   const [phase, setPhase] = useState<'enter' | 'counting' | 'completed' | 'revealing'>('enter');
   const [count, setCount] = useState(0);
+  const t = CONTENT[currentLang];
 
   useEffect(() => {
     const timerPhase1 = setTimeout(() => {
@@ -431,21 +650,21 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           : 'translate-y-0 pointer-events-auto'
       }`}
     >
-      {/* Top Bar: Editorial Branding */}
+      {/* Top Bar */}
       <div
         className={`flex items-center justify-between text-xs sm:text-sm font-semibold tracking-wider transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           phase === 'enter' ? 'opacity-0 -translate-y-3' : 'opacity-100 translate-y-0'
         }`}
       >
         <span className="uppercase tracking-[0.2em] text-neutral-800">
-          Дариа • Стоматология
+          {t.intro.brand}
         </span>
         <span className="uppercase tracking-[0.2em] text-neutral-500 font-mono text-[11px] sm:text-xs">
-          Варна, България
+          {t.location}
         </span>
       </div>
 
-      {/* Center: Editorial Main Typography */}
+      {/* Center Main Typography */}
       <div className="my-auto flex flex-col items-center justify-center text-center">
         <div
           className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -455,10 +674,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           }`}
         >
           <div className="text-[clamp(2.5rem,8vw,7rem)] font-extrabold uppercase tracking-tight leading-[0.85] text-black">
-            Дариа
+            {t.brandName}
           </div>
           <div className="text-[clamp(1.8rem,5.5vw,5rem)] font-extrabold uppercase tracking-tight leading-[0.88] text-neutral-800 -mt-1 md:-mt-3">
-            Зъболекар
+            {t.profession}
           </div>
         </div>
 
@@ -467,11 +686,11 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
             phase === 'enter' ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}
         >
-          Индивидуален подход и съвременно дентално лечение
+          {t.intro.desc}
         </p>
       </div>
 
-      {/* Bottom Bar: Large Speedometer Counter + Status */}
+      {/* Bottom Bar Counter */}
       <div className="flex items-end justify-between w-full pt-4">
         <div
           className={`flex items-baseline gap-1 font-bold tabular-nums tracking-tighter leading-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -492,10 +711,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           }`}
         >
           <span className="text-[10px] sm:text-xs font-mono tracking-widest text-neutral-400 uppercase">
-            Статус
+            {t.intro.status}
           </span>
           <span className="text-xs sm:text-sm font-bold text-black uppercase tracking-wider mt-0.5">
-            {count < 100 ? 'Зареждане' : 'Готово'}
+            {count < 100 ? t.intro.loading : t.intro.ready}
           </span>
         </div>
       </div>
@@ -504,10 +723,30 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 };
 
 // ==========================================
-// NAVBAR WITH REACT BITS MAGNETIC & PILLNAV
+// NAVBAR WITH FLAGS & LANGUAGE SELECTOR
 // ==========================================
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  currentLang: Language;
+  onSelectLang: (lang: Language) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ currentLang, onSelectLang }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const langMenuRef = useRef<HTMLDivElement | null>(null);
+  const t = CONTENT[currentLang];
+
+  const currentLangObj = LANGUAGES.find((l) => l.code === currentLang) || LANGUAGES[0];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (menuOpen) {
@@ -521,10 +760,10 @@ const Navbar: React.FC = () => {
   }, [menuOpen]);
 
   const navLinks = [
-    { label: 'Начало', href: '#hero' },
-    { label: 'Услуги', href: '#services' },
-    { label: 'Подход', href: '#approach' },
-    { label: 'Контакти', href: '#approach' },
+    { label: t.nav.home, href: '#hero' },
+    { label: t.nav.services, href: '#services' },
+    { label: t.nav.approach, href: '#approach' },
+    { label: t.nav.contact, href: '#approach' },
   ];
 
   const handleScroll = (href: string) => {
@@ -542,63 +781,119 @@ const Navbar: React.FC = () => {
         <Magnetic strength={0.25}>
           <a href="#hero" className="flex flex-col select-none group cursor-pointer">
             <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black group-hover:text-neutral-700 transition-colors">
-              {DOCTOR_NAME}
+              {t.brandName}
             </div>
             <div className="text-xl md:text-2xl font-extrabold uppercase tracking-tight leading-none text-black -mt-1.5 md:-mt-2 group-hover:text-neutral-700 transition-colors">
-              {PROFESSION}
+              {t.profession}
             </div>
             <span className="text-[8px] md:text-[9px] font-medium leading-none mt-1.5 md:mt-2 text-neutral-600 uppercase tracking-wider">
-              {LOCATION}
+              {t.location}
             </span>
           </a>
         </Magnetic>
 
-        {/* Desktop Nav with Magnetic Buttons */}
-        <div className="hidden md:flex items-center gap-6">
-          <Magnetic strength={0.3}>
-            <a
-              href={`tel:${PHONE_RAW}`}
-              className="text-sm font-semibold text-black hover:text-neutral-600 transition-colors px-3 py-1.5 rounded-full hover:bg-neutral-100"
-            >
-              Запишете час
-            </a>
-          </Magnetic>
-
-          <Magnetic strength={0.4}>
+        {/* Right Section: Language Selector with Flags + Actions */}
+        <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
+          {/* Flag & Language Selector (BG, EN, TR, RO) */}
+          <div ref={langMenuRef} className="relative">
             <button
               type="button"
-              onClick={() => setMenuOpen(true)}
-              className="px-6 py-3 bg-white rounded-full border border-black text-sm font-semibold text-black hover:bg-black hover:text-white transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-100 hover:bg-neutral-200 text-xs font-bold text-black transition-all cursor-pointer border border-neutral-200/80 shadow-sm"
+              aria-label="Смени езика / Change language"
             >
-              Menu
+              <span className="text-base leading-none">{currentLangObj.flag}</span>
+              <span className="font-mono uppercase text-[11px] font-extrabold">
+                {currentLangObj.code}
+              </span>
+              <svg
+                className={`w-3 h-3 transition-transform duration-200 ${
+                  langDropdownOpen ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
-          </Magnetic>
-        </div>
 
-        {/* Mobile Hamburger */}
-        <div className="md:hidden">
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Отвори меню"
-            className="w-10 h-10 flex items-center justify-center relative cursor-pointer"
-          >
-            <span
-              className={`absolute h-0.5 w-6 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                menuOpen ? 'rotate-45 translate-y-0' : '-translate-y-2'
-              }`}
-            />
-            <span
-              className={`absolute h-0.5 w-6 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                menuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
-              }`}
-            />
-            <span
-              className={`absolute h-0.5 w-6 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                menuOpen ? '-rotate-45 translate-y-0' : 'translate-y-2'
-              }`}
-            />
-          </button>
+            {/* Language Dropdown Menu */}
+            {langDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-38 bg-white rounded-2xl shadow-2xl border border-neutral-200 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => {
+                      onSelectLang(lang.code);
+                      setLangDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold transition-colors text-left cursor-pointer ${
+                      currentLang === lang.code
+                        ? 'bg-neutral-100 text-black font-bold'
+                        : 'text-neutral-700 hover:bg-neutral-50 hover:text-black'
+                    }`}
+                  >
+                    <span className="text-base leading-none">{lang.flag}</span>
+                    <span className="flex-1">{lang.label}</span>
+                    <span className="text-[10px] font-mono text-neutral-400 uppercase">
+                      {lang.code}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Nav CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            <Magnetic strength={0.3}>
+              <a
+                href={`tel:${t.phoneRaw}`}
+                className="text-xs md:text-sm font-semibold text-black hover:text-neutral-600 transition-colors px-3 py-1.5 rounded-full hover:bg-neutral-100"
+              >
+                {t.nav.bookCta}
+              </a>
+            </Magnetic>
+
+            <Magnetic strength={0.4}>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                className="px-5 py-2.5 bg-white rounded-full border border-black text-xs md:text-sm font-semibold text-black hover:bg-black hover:text-white transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+              >
+                Menu
+              </button>
+            </Magnetic>
+          </div>
+
+          {/* Mobile Hamburger */}
+          <div className="md:hidden">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Отвори меню"
+              className="w-9 h-9 flex items-center justify-center relative cursor-pointer"
+            >
+              <span
+                className={`absolute h-0.5 w-5 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                  menuOpen ? 'rotate-45 translate-y-0' : '-translate-y-1.5'
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-5 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                  menuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-5 bg-black rounded-full transition-all duration-300 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                  menuOpen ? '-rotate-45 translate-y-0' : 'translate-y-1.5'
+                }`}
+              />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -608,7 +903,6 @@ const Navbar: React.FC = () => {
           menuOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
-        {/* Backdrop */}
         <div
           onClick={() => setMenuOpen(false)}
           className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-500 ${
@@ -616,47 +910,65 @@ const Navbar: React.FC = () => {
           }`}
         />
 
-        {/* Slide-out Drawer */}
         <div
           className={`absolute top-0 right-0 h-full w-[85%] max-w-sm bg-white shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex flex-col justify-center h-full px-8 gap-1">
-            {navLinks.map((item, i) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => handleScroll(item.href)}
-                className={`text-left text-3xl font-bold text-black hover:text-neutral-500 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] cursor-pointer ${
-                  menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-                }`}
-                style={{
-                  transitionDelay: menuOpen ? `${100 + i * 60}ms` : '0ms',
-                }}
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="flex flex-col justify-between h-full px-7 py-12 pt-20">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((item, i) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => handleScroll(item.href)}
+                  className={`text-left text-3xl font-bold text-black hover:text-neutral-500 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] cursor-pointer py-1 ${
+                    menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+                  }`}
+                  style={{
+                    transitionDelay: menuOpen ? `${100 + i * 60}ms` : '0ms',
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
 
-            <div
-              className={`mt-8 pt-8 border-t border-neutral-200 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
-                menuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-              }`}
-              style={{
-                transitionDelay: menuOpen ? '450ms' : '0ms',
-              }}
-            >
-              <div className="text-sm font-semibold text-black mb-4">
-                {LOCATION} • {PHONE_DISPLAY}
+            {/* Mobile Language Switcher Strip */}
+            <div className="flex flex-col gap-4 pt-6 border-t border-neutral-200">
+              <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                Език / Language
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => onSelectLang(lang.code)}
+                    className={`flex items-center gap-2 p-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      currentLang === lang.code
+                        ? 'bg-black text-white'
+                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span>{lang.label}</span>
+                  </button>
+                ))}
               </div>
-              <a
-                href={`tel:${PHONE_RAW}`}
-                onClick={() => setMenuOpen(false)}
-                className="block w-full px-6 py-4 bg-black rounded-full text-white text-sm font-semibold hover:bg-neutral-800 transition-colors duration-200 text-center shadow-md"
-              >
-                Запишете час
-              </a>
+
+              <div className="pt-2">
+                <div className="text-xs font-semibold text-neutral-500 mb-1">
+                  {t.location} • {t.phoneDisplay}
+                </div>
+                <a
+                  href={`tel:${t.phoneRaw}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block w-full py-3.5 bg-black rounded-full text-white text-xs font-bold uppercase tracking-wider text-center hover:bg-neutral-800 transition-colors shadow-md"
+                >
+                  {t.nav.bookCta}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -670,6 +982,8 @@ const Navbar: React.FC = () => {
 // ==========================================
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [currentLang, setCurrentLang] = useState<Language>('bg');
+  const t = CONTENT[currentLang];
   const isMobile = useIsMobile();
 
   // Section 1 Refs & Hooks
@@ -694,10 +1008,15 @@ export default function App() {
   return (
     <div className="bg-white selection:bg-black selection:text-white">
       {/* 1. SPLASH SCREEN */}
-      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      {showSplash && (
+        <SplashScreen
+          currentLang={currentLang}
+          onComplete={() => setShowSplash(false)}
+        />
+      )}
 
-      {/* 2. FIXED NAVBAR */}
-      <Navbar />
+      {/* 2. FIXED NAVBAR WITH FLAGS */}
+      <Navbar currentLang={currentLang} onSelectLang={setCurrentLang} />
 
       {/* ========================================================================= */}
       {/* SECTION 1 — HERO                                                          */}
@@ -711,7 +1030,7 @@ export default function App() {
         className="h-screen w-full overflow-hidden flex flex-col pt-24 md:pt-24 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2"
       >
         {/* 3 Feature Bars */}
-        {featureBars.map((text, i) => (
+        {t.hero.bars.map((text, i) => (
           <MaskedCard
             key={text}
             bgImage={HERO_IMAGE}
@@ -746,31 +1065,31 @@ export default function App() {
         >
           {/* Top-left supporting text */}
           <div className="absolute top-4 left-4 md:top-7 md:left-7 text-black text-xs md:text-sm font-semibold leading-4 md:leading-5 max-w-[240px] md:max-w-[340px] z-10">
-            Индивидуален подход и съвременно дентално лечение в спокойна и комфортна обстановка.
+            {t.hero.topSupporting}
           </div>
 
           {/* Bottom-left block */}
           <div className="absolute bottom-5 left-3 md:bottom-8 md:left-4 z-10">
             <span className="block text-black text-xs md:text-sm font-semibold mb-1 md:mb-2">
-              Зъболекар във Варна
+              {t.hero.tag}
             </span>
             <h1 className="text-black text-[clamp(2.8rem,9.5vw,9.5rem)] font-bold leading-[0.82] tracking-tight">
-              Внимателна грижа.
+              {t.hero.headlinePart1}
               <br />
-              Прецизно лечение.
+              {t.hero.headlinePart2}
             </h1>
             <p className="text-black/80 text-[11px] md:text-xs font-medium mt-2 max-w-[300px] md:max-w-[420px] leading-relaxed">
-              Търсите внимателен и прецизен зъболекар във Варна? Предлагам индивидуален подход и съвременно стоматологично лечение.
+              {t.hero.bottomSupporting}
             </p>
           </div>
 
           {/* Bottom-right CTA */}
           <Magnetic strength={0.3} className="absolute bottom-6 right-4 md:bottom-10 md:right-8 z-10">
             <a
-              href={`tel:${PHONE_RAW}`}
+              href={`tel:${t.phoneRaw}`}
               className="text-white text-xs md:text-sm font-semibold hover:underline transition-all bg-black/40 md:bg-transparent px-3 py-1.5 md:p-0 rounded-full md:rounded-none backdrop-blur-sm md:backdrop-blur-none inline-block"
             >
-              Запишете час
+              {t.hero.cta}
             </a>
           </Magnetic>
         </MaskedCard>
@@ -788,7 +1107,7 @@ export default function App() {
         className="min-h-screen md:h-screen w-full overflow-hidden flex flex-col pt-1.5 md:pt-2 px-3 md:px-5 pb-1.5 md:pb-2 gap-1.5 md:gap-2"
       >
         <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_auto_auto_auto] md:grid-rows-[1fr_1fr_0.8fr] gap-1.5 md:gap-2">
-          {/* Card 0 - Top Left ("Дентална грижа") */}
+          {/* Card 0 - Top Left */}
           <MaskedCard
             bgImage={SECTION2_IMAGE}
             position={s2Mask.positions[0]}
@@ -801,10 +1120,10 @@ export default function App() {
             className="rounded-xl md:rounded-2xl overflow-hidden relative min-h-[160px] md:min-h-0 shadow-sm"
           >
             <h2 className="absolute top-4 left-5 md:top-6 md:left-7 text-white md:text-black text-2xl md:text-3xl font-bold z-10">
-              Дентална грижа
+              {t.section2.card0Title}
             </h2>
             <p className="absolute bottom-4 left-5 md:bottom-6 md:left-7 text-white md:text-black text-xs md:text-sm font-semibold z-10">
-              Професионално лечение с индивидуален подход
+              {t.section2.card0Subtitle}
             </p>
           </MaskedCard>
 
@@ -821,19 +1140,19 @@ export default function App() {
             className="md:row-span-2 rounded-xl md:rounded-2xl overflow-hidden relative min-h-[220px] md:min-h-0 shadow-sm"
           >
             <div className="absolute bottom-16 left-5 md:bottom-20 md:left-7 text-white text-xs md:text-sm font-semibold leading-4 md:leading-5 z-10 max-w-[320px] md:max-w-[420px]">
-              Работя с внимание към детайла и се стремя всеки пациент да получи ясно обяснение за състоянието си и възможните варианти за лечение.
+              {t.section2.card1Text}
             </div>
             <Magnetic strength={0.3} className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10">
               <a
-                href={`tel:${PHONE_RAW}`}
+                href={`tel:${t.phoneRaw}`}
                 className="px-5 py-3 md:px-8 md:py-5 bg-white rounded-full text-black text-base md:text-xl font-bold hover:scale-105 transition-transform cursor-pointer shadow-md inline-block"
               >
-                Обадете се
+                {t.section2.card1Cta}
               </a>
             </Magnetic>
           </MaskedCard>
 
-          {/* Card 2 - Bottom Left ("Грижа за вашата усмивка") */}
+          {/* Card 2 - Bottom Left */}
           <MaskedCard
             bgImage={SECTION2_IMAGE}
             position={s2Mask.positions[2]}
@@ -845,12 +1164,8 @@ export default function App() {
             style={s2Reveal.getAnimStyle(2)}
             className="rounded-xl md:rounded-2xl overflow-hidden relative min-h-[160px] md:min-h-0 shadow-sm"
           >
-            <h2 className="absolute top-4 left-5 md:top-6 md:left-7 text-white md:text-black text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.9] z-10">
-              Грижа за
-              <br />
-              вашата
-              <br />
-              усмивка
+            <h2 className="absolute top-4 left-5 md:top-6 md:left-7 text-white md:text-black text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.9] z-10 whitespace-pre-line">
+              {t.section2.card2Headline}
             </h2>
           </MaskedCard>
 
@@ -869,9 +1184,9 @@ export default function App() {
             <div className="absolute inset-0 z-10 flex flex-col justify-between p-2 md:p-3">
               {/* 4 Primary Service Sub-Cards with Spotlight */}
               <div className="flex flex-wrap md:flex-nowrap gap-1.5 md:gap-2 flex-1">
-                {services.map((svc) => (
+                {t.section2.services.map((svc) => (
                   <SpotlightCard
-                    key={svc.name}
+                    key={svc.num}
                     spotlightColor={svc.active ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.25)'}
                     className={`flex-1 min-w-[calc(50%-4px)] md:min-w-0 rounded-xl md:rounded-2xl p-3 md:p-5 flex flex-col justify-between ${
                       svc.active
@@ -906,15 +1221,15 @@ export default function App() {
               <div className="mt-1 px-3 py-2 rounded-xl bg-black/50 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 text-[10.5px] md:text-xs font-semibold text-white/95">
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                  05. {additionalServices[0]}
+                  05. {t.section2.additionalServices[0]}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                  06. {additionalServices[1]}
+                  06. {t.section2.additionalServices[1]}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                  07. {additionalServices[2]}
+                  07. {t.section2.additionalServices[2]}
                 </span>
               </div>
             </div>
@@ -941,13 +1256,11 @@ export default function App() {
               style={s3Reveal.getAnimStyle(0)}
               className="rounded-xl md:rounded-2xl bg-stone-50 p-5 sm:p-6 md:p-7 flex flex-col justify-between flex-[1.1] min-h-[160px] md:min-h-0 shadow-sm border border-black/5"
             >
-              <h2 className="text-[clamp(2.4rem,5.5vw,5.5rem)] font-bold leading-[0.95] text-black">
-                Индивидуален
-                <br />
-                подход
+              <h2 className="text-[clamp(2.4rem,5.5vw,5.5rem)] font-bold leading-[0.95] text-black whitespace-pre-line">
+                {t.section3.approachTitle}
               </h2>
               <p className="text-xs md:text-sm font-semibold text-black/80 mt-3">
-                Прецизност и внимание към детайла
+                {t.section3.approachSubtitle}
               </p>
             </SpotlightCard>
 
@@ -963,7 +1276,7 @@ export default function App() {
               >
                 <img
                   src={SECTION3_IMG1}
-                  alt="Клиничен резултат преди и след естетично възстановяване"
+                  alt="Clinical result before and after"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -976,7 +1289,7 @@ export default function App() {
               >
                 <img
                   src={SECTION3_IMG2}
-                  alt="Стоматологичен кабинет във Варна"
+                  alt="Dental clinic practice"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
@@ -991,20 +1304,18 @@ export default function App() {
             >
               <div className="flex flex-col">
                 <span className="text-xs md:text-sm font-bold uppercase tracking-wider text-black/70 mb-1 md:mb-2">
-                  Консултация
+                  {t.section3.consultationTag}
                 </span>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black leading-tight">
-                  Ясно обяснение.
-                  <br />
-                  Прецизно лечение.
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black leading-tight whitespace-pre-line">
+                  {t.section3.consultationHeadline}
                 </h3>
               </div>
               <Magnetic strength={0.35} className="shrink-0">
                 <a
-                  href={`tel:${PHONE_RAW}`}
+                  href={`tel:${t.phoneRaw}`}
                   className="w-full sm:w-auto px-6 py-3 sm:px-7 sm:py-4 md:px-8 md:py-4 bg-black text-white rounded-full text-sm sm:text-base md:text-lg font-bold hover:bg-neutral-800 transition-all cursor-pointer shadow-lg inline-flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
                 >
-                  <span>Запишете час</span>
+                  <span>{t.section3.consultationCta}</span>
                   <span>→</span>
                 </a>
               </Magnetic>
@@ -1018,7 +1329,7 @@ export default function App() {
           >
             <img
               src={SECTION3_BG}
-              alt="Усмихнат пациент в спокойна обстановка"
+              alt="Smiling patient"
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -1026,10 +1337,10 @@ export default function App() {
             {/* Top Info Banner */}
             <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 bg-black/75 backdrop-blur-md rounded-xl p-3.5 sm:p-4 text-white z-10 border border-white/15 shadow-lg">
               <span className="text-[10px] sm:text-xs font-mono tracking-widest text-neutral-300 uppercase block mb-1">
-                {LOCATION} • {PHONE_DISPLAY}
+                {t.location} • {t.phoneDisplay}
               </span>
               <p className="text-xs sm:text-sm font-bold leading-snug">
-                Запишете час за консултация и се погрижете навреме за усмивката си.
+                {t.section3.bannerText}
               </p>
             </div>
 
@@ -1037,13 +1348,11 @@ export default function App() {
             <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex gap-2 md:gap-2">
               {/* Overlay Card 1 (White, Left) */}
               <a
-                href={`tel:${PHONE_RAW}`}
+                href={`tel:${t.phoneRaw}`}
                 className="flex-1 bg-white hover:bg-neutral-100 rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-5 flex flex-col justify-between h-28 sm:h-36 md:h-48 shadow-xl transition-all hover:scale-[1.02] border border-black/5 group cursor-pointer"
               >
-                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-black leading-tight">
-                  Вашето
-                  <br />
-                  лечение
+                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-black leading-tight whitespace-pre-line">
+                  {t.section3.overlay1}
                 </h4>
                 <div className="self-end w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg
@@ -1066,13 +1375,11 @@ export default function App() {
 
               {/* Overlay Card 2 (Glass, Right) */}
               <a
-                href={`tel:${PHONE_RAW}`}
+                href={`tel:${t.phoneRaw}`}
                 className="flex-1 bg-black/60 hover:bg-black/75 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 sm:p-4 md:p-5 flex flex-col justify-between h-28 sm:h-36 md:h-48 shadow-xl transition-all hover:scale-[1.02] border border-white/20 group cursor-pointer"
               >
-                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-white leading-tight">
-                  Грижа за
-                  <br />
-                  усмивката
+                <h4 className="text-sm sm:text-lg md:text-2xl font-bold text-white leading-tight whitespace-pre-line">
+                  {t.section3.overlay2}
                 </h4>
                 <div className="self-end w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg
@@ -1101,8 +1408,8 @@ export default function App() {
       <Magnetic strength={0.4} className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         <a
           id="floating-call-btn"
-          href={`tel:${PHONE_RAW}`}
-          aria-label={`Обадете се: ${PHONE_DISPLAY}`}
+          href={`tel:${t.phoneRaw}`}
+          aria-label={`Обадете се: ${t.phoneDisplay}`}
           className="flex items-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3 md:px-5 md:py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer border border-white/25"
         >
           <svg
@@ -1119,7 +1426,7 @@ export default function App() {
             />
           </svg>
           <span className="text-xs sm:text-sm font-bold tracking-wider whitespace-nowrap">
-            {PHONE_DISPLAY}
+            {t.phoneDisplay}
           </span>
         </a>
       </Magnetic>
