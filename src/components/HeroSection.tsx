@@ -124,7 +124,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
               initial={{ x: -260, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.85, delay: 0.1, ease: EXPO_OUT }}
-              className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.045em] leading-[0.84] text-[clamp(52px,14.8vw,80px)] md:text-[clamp(82px,9vw,145px)] whitespace-nowrap block drop-shadow-2xl"
+              className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.04em] leading-[0.86] text-[clamp(38px,11vw,68px)] sm:text-[clamp(56px,12.5vw,84px)] md:text-[clamp(82px,9vw,145px)] whitespace-nowrap block drop-shadow-2xl"
             >
               {t.hero.headlineLine1}
             </motion.h1>
@@ -137,11 +137,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
               initial={{ x: 260, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.85, delay: 0.2, ease: EXPO_OUT }}
-              className="pl-[6%] sm:pl-[12%] md:pl-[16%]"
+              className="pl-[3%] sm:pl-[8%] md:pl-[14%]"
             >
               <h1
                 id="hero-headline-line-2"
-                className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.045em] leading-[0.84] text-[clamp(52px,14.8vw,80px)] md:text-[clamp(82px,9vw,145px)] whitespace-nowrap block drop-shadow-2xl"
+                className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.04em] leading-[0.86] text-[clamp(38px,11vw,68px)] sm:text-[clamp(56px,12.5vw,84px)] md:text-[clamp(82px,9vw,145px)] whitespace-nowrap block drop-shadow-2xl"
               >
                 {t.hero.headlineLine2}
               </h1>
@@ -181,12 +181,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ currentLang, onCtaClic
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5, ease: EXPO_OUT }}
-        className="relative z-10 w-full flex items-end justify-between border-t border-[#181818] pt-3.5"
+        className="relative z-10 w-full flex items-end justify-end border-t border-[#181818] pt-3.5"
       >
-        <div id="hero-stage-index" className="text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-[#92918C]">
-          <span className="text-[#F3F0E9] font-bold">01</span> / 02
-        </div>
-
         {/* Scroll To Explore Subtle Indicator */}
         <div
           id="hero-scroll-indicator"
