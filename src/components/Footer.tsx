@@ -1,5 +1,6 @@
 import React from 'react';
-import { Language, TRANSLATIONS } from '../translations';
+import { Phone, MapPin } from 'lucide-react';
+import { Language, TRANSLATIONS, SITE_DATA } from '../translations';
 
 interface FooterProps {
   currentLang?: Language;
@@ -25,39 +26,47 @@ export const Footer: React.FC<FooterProps> = ({ currentLang = 'bg', onContactCli
           
           {/* Left Brand block */}
           <div className="flex flex-col">
-            <h2 className="font-condensed font-extrabold text-[42px] sm:text-[54px] tracking-tight uppercase leading-none text-[#F3F0E9]">
-              RADI
+            <h2 className="font-condensed font-extrabold text-[38px] sm:text-[48px] tracking-tight uppercase leading-none text-[#F3F0E9]">
+              {SITE_DATA.doctorName}
             </h2>
-            <p className="text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-[#92918C] uppercase mt-2">
-              DENTAL PROSTHETICS LABORATORY
+            <p className="text-[10px] sm:text-[11px] font-mono tracking-[0.2em] text-[#A6B09F] uppercase mt-2">
+              СТОМАТОЛОГИЧЕН КАБИНЕТ
             </p>
-            <p className="text-[9.5px] font-mono tracking-[0.16em] text-[#666666] uppercase mt-1">
-              BLAGOEVGRAD / BULGARIA
+            <p className="text-[9.5px] font-mono tracking-[0.16em] text-[#92918C] uppercase mt-1">
+              ВАРНА, БЪЛГАРИЯ
             </p>
+
+            <a
+              href={`tel:${SITE_DATA.phoneRaw}`}
+              className="inline-flex items-center gap-2 mt-4 text-[12px] font-mono text-[#F3F0E9] hover:text-[#A6B09F] transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5 text-[#A6B09F]" />
+              <span>{SITE_DATA.phone}</span>
+            </a>
           </div>
 
           {/* Right Navigation links */}
           <nav className="flex flex-wrap items-center gap-6 sm:gap-10">
             <button
               type="button"
-              onClick={() => scrollToSection('process')}
+              onClick={() => scrollToSection('services')}
               className="text-[11px] sm:text-[12px] font-mono tracking-[0.2em] text-[#92918C] hover:text-[#F3F0E9] uppercase transition-colors cursor-pointer"
             >
-              {t.nav?.process || 'ПРОЦЕС'}
+              УСЛУГИ
             </button>
             <button
               type="button"
-              onClick={() => scrollToSection('pricing')}
+              onClick={() => scrollToSection('approach')}
               className="text-[11px] sm:text-[12px] font-mono tracking-[0.2em] text-[#92918C] hover:text-[#F3F0E9] uppercase transition-colors cursor-pointer"
             >
-              {t.nav?.pricing || 'ЦЕНИ'}
+              ПОДХОД
             </button>
             <button
               type="button"
-              onClick={() => scrollToSection('experience')}
+              onClick={() => scrollToSection('case')}
               className="text-[11px] sm:text-[12px] font-mono tracking-[0.2em] text-[#92918C] hover:text-[#F3F0E9] uppercase transition-colors cursor-pointer"
             >
-              {t.nav?.services || 'УСЛУГИ'}
+              РЕЗУЛТАТИ
             </button>
             <button
               type="button"
@@ -67,15 +76,15 @@ export const Footer: React.FC<FooterProps> = ({ currentLang = 'bg', onContactCli
               }}
               className="text-[11px] sm:text-[12px] font-mono tracking-[0.2em] text-[#92918C] hover:text-[#F3F0E9] uppercase transition-colors cursor-pointer"
             >
-              {t.nav?.contact || 'КОНТАКТ'}
+              КОНТАКТИ
             </button>
           </nav>
         </div>
 
         {/* Bottom Row: Copyright */}
         <div className="w-full flex items-center justify-between border-t border-white/[0.08] pt-6 text-[10px] font-mono tracking-[0.2em] text-[#666666] uppercase">
-          <span>© 2026 RADI</span>
-          <span>ALL RIGHTS RESERVED</span>
+          <span>© 2026 {SITE_DATA.doctorName} • ВАРНА</span>
+          <span>ВСИЧКИ ПРАВА ЗАПАЗЕНИ</span>
         </div>
 
       </div>

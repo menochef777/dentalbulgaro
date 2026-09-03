@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Phone, MapPin } from 'lucide-react';
-import { Language, TRANSLATIONS } from '../translations';
+import { Language, SITE_DATA } from '../translations';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -13,8 +13,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
   onClose,
   currentLang = 'bg',
 }) => {
-  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.bg;
-
   if (!isOpen) return null;
 
   return (
@@ -29,16 +27,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({
       {/* Modal Container */}
       <div
         id="contact-dialog"
-        className="relative z-10 w-full max-w-lg bg-[#0A0A0A] border border-[#262626] rounded-[20px] p-6 sm:p-8 text-[#F3F0E9] shadow-2xl overflow-hidden transform transition-all duration-200"
+        className="relative z-10 w-full max-w-lg bg-[#0A0A0A] border border-[#262626] rounded-[24px] p-6 sm:p-8 text-[#F3F0E9] shadow-2xl overflow-hidden transform transition-all duration-200"
       >
         {/* Header */}
         <div className="flex items-start justify-between border-b border-[#1C1C1C] pb-4">
           <div>
             <span className="text-[10px] font-mono tracking-[0.2em] text-[#A6B09F] uppercase">
-              {t.contactModal.badge}
+              Д-Р ДАРИА • ВАРНА
             </span>
             <h3 className="font-condensed font-extrabold text-2xl sm:text-3xl tracking-tight text-[#F3F0E9] uppercase mt-1">
-              {t.contactModal.title}
+              ЗАПИШЕТЕ ЧАС
             </h3>
           </div>
           <button
@@ -54,13 +52,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({
         {/* Content */}
         <div className="py-6 space-y-4">
           <p className="font-editorial text-[14px] text-[#A8A7A2] leading-relaxed">
-            {t.contactModal.desc}
+            {SITE_DATA.description}
           </p>
 
           <div className="space-y-3 pt-2">
             {/* Direct Clickable Phone Button */}
             <a
-              href="tel:0879108332"
+              href={`tel:${SITE_DATA.phoneRaw}`}
               className="flex items-center justify-between p-4 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] border border-white/[0.12] hover:border-[#A6B09F] transition-all group cursor-pointer"
             >
               <div className="flex items-center gap-3.5">
@@ -69,15 +67,15 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </div>
                 <div>
                   <div className="text-[10px] font-mono tracking-wider text-[#92918C] uppercase">
-                    {t.contactModal.contactLabel || 'ТЕЛЕФОН ЗА ВРЪЗКА'}
+                    ТЕЛЕФОН ЗА ВРЪЗКА
                   </div>
-                  <div className="text-[17px] font-condensed font-bold text-[#F3F0E9] tracking-wider">
-                    087 910 8332
+                  <div className="text-[18px] font-condensed font-bold text-[#F3F0E9] tracking-wider">
+                    {SITE_DATA.phone}
                   </div>
                 </div>
               </div>
 
-              <span className="text-[11px] font-mono tracking-widest text-[#A6B09F] uppercase bg-white/[0.05] group-hover:bg-[#A6B09F] group-hover:text-[#050505] px-3 py-1.5 rounded-full transition-all">
+              <span className="text-[11px] font-mono font-bold tracking-widest text-[#050505] bg-[#F3F0E9] group-hover:bg-white px-3.5 py-1.5 rounded-full transition-all shadow-md">
                 ОБАДИ СЕ
               </span>
             </a>
@@ -89,10 +87,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({
               </div>
               <div>
                 <div className="text-[10px] font-mono tracking-wider text-[#92918C] uppercase">
-                  {t.contactModal.locationLabel || 'ЛОКАЦИЯ'}
+                  ЛОКАЦИЯ
                 </div>
-                <div className="text-[13.5px] font-medium text-[#F3F0E9]">
-                  Благоевград, кв. Ален Мак, България
+                <div className="text-[14px] font-medium text-[#F3F0E9]">
+                  {SITE_DATA.location}
                 </div>
               </div>
             </div>
@@ -101,8 +99,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
         {/* Footer */}
         <div className="border-t border-[#1C1C1C] pt-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-[#92918C] uppercase">
-          <span>087 910 8332</span>
-          <span>BLAGOEVGRAD / BG</span>
+          <span>{SITE_DATA.phone}</span>
+          <span>ВАРНА / БЪЛГАРИЯ</span>
         </div>
       </div>
     </div>

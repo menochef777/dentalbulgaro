@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowUpRight, MapPin } from 'lucide-react';
-import { Language } from '../translations';
-import { useStaggeredReveal, EXPO_OUT } from '../hooks/useStaggeredReveal';
+import { motion } from 'motion/react';
+import { ArrowUpRight, MapPin, Phone } from 'lucide-react';
+import { Language, SITE_DATA } from '../translations';
+import { useStaggeredReveal } from '../hooks/useStaggeredReveal';
 
 interface ContactSectionProps {
   currentLang?: Language;
@@ -14,12 +14,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   onContactClick,
 }) => {
   const isBg = currentLang === 'bg';
-
-  const { ref: sectionRef, isInView, getStaggerVariants } = useStaggeredReveal(0.12);
-
-  // Real Google Maps URL for Alen Mak, Blagoevgrad, Bulgaria
-  const googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=%D0%90%D0%BB%D0%B5%D0%BD+%D0%BC%D0%B0%D0%BA,+%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B5%D0%B2%D0%B3%D1%80%D0%B0%D0%B4,+%D0%91%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D0%B8%D1%8F';
-  const googleMapsEmbedUrl = 'https://maps.google.com/maps?q=%D0%90%D0%BB%D0%B5%D0%BD%20%D0%BC%D0%B0%D0%BA,%20%D0%91%D0%BB%D0%B0%D0%B3%D0%BE%D0%B5%D0%B2%D0%B3%D1%80%D0%B0%D0%B4,%20%D0%91%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D0%B8%D1%8F&t=&z=14&ie=UTF8&iwloc=&output=embed';
+  const { ref: sectionRef, getStaggerVariants } = useStaggeredReveal(0.12);
 
   return (
     <section
@@ -46,28 +41,28 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             className="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.24em] text-[#A6B09F] uppercase mb-4 sm:mb-6 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 w-fit"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#A6B09F] animate-pulse" />
-            <span className="font-semibold text-[#A6B09F]">RADI / 05</span>
+            <span className="font-semibold text-[#A6B09F]">ДАРИА / КОНТАКТИ</span>
             <span className="text-white/30">•</span>
-            <span className="text-[#F3F0E9]/80">CONTACT & LOCATION</span>
+            <span className="text-[#F3F0E9]/80">ВАРНА, БЪЛГАРИЯ</span>
           </motion.div>
 
           {/* Enormous Headline */}
           <div className="overflow-hidden mb-8 sm:mb-12">
             <motion.h2
               {...getStaggerVariants(1)}
-              className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.045em] leading-[0.85] text-[clamp(52px,10vw,120px)] select-none drop-shadow-2xl"
+              className="font-condensed font-extrabold uppercase text-[#F3F0E9] tracking-[-0.045em] leading-[0.85] text-[clamp(46px,9vw,110px)] select-none drop-shadow-2xl"
             >
               {isBg ? (
                 <>
-                  НЕКА
+                  ЗАПИШЕТЕ
                   <br />
-                  <span className="text-[#F3F0E9]/90">СЕ СВЪРЖЕМ.</span>
+                  <span className="text-[#F3F0E9]/90">СВОЯ ЧАС.</span>
                 </>
               ) : (
                 <>
-                  LET’S
+                  BOOK YOUR
                   <br />
-                  <span className="text-[#F3F0E9]/90">CONNECT.</span>
+                  <span className="text-[#F3F0E9]/90">APPOINTMENT.</span>
                 </>
               )}
             </motion.h2>
@@ -79,17 +74,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             className="flex flex-col sm:flex-row sm:items-center gap-6 text-[14px] sm:text-[16px] font-mono tracking-[0.16em] uppercase mb-8 sm:mb-10 leading-relaxed border-l-2 border-[#A6B09F] pl-4"
           >
             <div className="flex flex-col text-[#A8A7A2]">
-              <span className="text-[#F3F0E9] font-bold">БЛАГОЕВГРАД</span>
-              <span>АЛЕН МАК</span>
+              <span className="text-[#F3F0E9] font-bold">ВАРНА</span>
               <span>БЪЛГАРИЯ</span>
             </div>
 
             <a
-              href="tel:0879108332"
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/[0.06] hover:bg-[#A6B09F] hover:text-[#050505] border border-white/[0.14] text-[#F3F0E9] text-[13px] font-mono tracking-wider transition-all w-fit cursor-pointer"
+              href={`tel:${SITE_DATA.phoneRaw}`}
+              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-white/[0.06] hover:bg-[#A6B09F] hover:text-[#050505] border border-white/[0.14] text-[#F3F0E9] text-[14px] font-mono font-bold tracking-wider transition-all w-fit cursor-pointer shadow-lg"
             >
-              <span className="w-2 h-2 rounded-full bg-[#A6B09F] animate-pulse" />
-              <span>087 910 8332</span>
+              <Phone className="w-4 h-4 text-[#A6B09F] hover:text-[#050505]" />
+              <span>{SITE_DATA.phone}</span>
             </a>
           </motion.div>
 
@@ -98,10 +92,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             <button
               type="button"
               onClick={onContactClick}
-              className="group relative inline-flex items-center justify-between gap-4 sm:gap-6 bg-[#F3F0E9] text-[#050505] rounded-full pl-6 sm:pl-8 pr-2.5 sm:pr-3 h-[54px] sm:h-[62px] min-w-[220px] sm:min-w-[260px] shadow-2xl hover:bg-white transition-all duration-300 cursor-pointer focus:outline-none hover:scale-[1.02]"
+              className="group relative inline-flex items-center justify-between gap-4 sm:gap-6 bg-[#F3F0E9] text-[#050505] rounded-full pl-6 sm:pl-8 pr-2.5 sm:pr-3 h-[54px] sm:h-[62px] min-w-[220px] sm:min-w-[280px] shadow-2xl hover:bg-white transition-all duration-300 cursor-pointer focus:outline-none hover:scale-[1.02]"
             >
               <span className="font-editorial text-[13px] sm:text-[15px] font-bold tracking-[0.06em] uppercase whitespace-nowrap">
-                {isBg ? 'СВЪРЖЕТЕ СЕ С НАС' : 'GET IN TOUCH'}
+                {isBg ? 'ЗАПИШЕТЕ ЧАС ЗА КОНСУЛТАЦИЯ' : 'BOOK A CONSULTATION'}
               </span>
               <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#050505] text-[#F3F0E9] flex items-center justify-center transition-transform duration-300 group-hover:rotate-45 shrink-0 shadow-md">
                 <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.4]" />
@@ -122,14 +116,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           <div className="flex items-center justify-between text-[10px] font-mono tracking-[0.2em] text-[#92918C] uppercase mb-3">
             <span className="flex items-center gap-1.5 text-[#A6B09F]">
               <MapPin className="w-3.5 h-3.5 text-[#A6B09F]" />
-              <span>LOCATION</span>
+              <span>ЛОКАЦИЯ</span>
             </span>
-            <span>BLAGOEVGRAD / BG</span>
+            <span>ВАРНА / BG</span>
           </div>
 
-          {/* Maps Framed Container — 100% Freeze-Free & Ultra-Fast Native Card */}
+          {/* Maps Framed Container — 100% Freeze-Free Native Card */}
           <a
-            href="https://maps.google.com/?q=Alen+Mak,+Blagoevgrad,+Bulgaria"
+            href="https://maps.google.com/?q=Varna,+Bulgaria"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Отвори локацията в Google Maps"
@@ -157,11 +151,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
                 <span className="w-2 h-2 rounded-full bg-[#A6B09F] animate-ping" />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-[#F3F0E9] uppercase">
-                  42.0209° N, 23.0943° E
+                  43.2141° N, 27.9147° E
                 </span>
               </div>
               <span className="text-[10px] font-mono tracking-widest text-[#92918C] uppercase">
-                BLAGOEVGRAD
+                ВАРНА
               </span>
             </div>
 
@@ -172,10 +166,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <MapPin className="w-7 h-7 text-[#A6B09F] relative z-10 drop-shadow-[0_0_12px_rgba(166,176,159,0.8)]" />
               </div>
               <span className="font-condensed font-extrabold uppercase text-[20px] sm:text-[22px] tracking-tight text-[#F3F0E9]">
-                RADI LABORATORY
+                СТОМАТОЛОГ ДАРИА
               </span>
               <span className="font-mono text-[11px] text-[#A6B09F] tracking-wider uppercase mt-0.5">
-                КВ. АЛЕН МАК, БЛАГОЕВГРАД
+                ВАРНА, БЪЛГАРИЯ
               </span>
             </div>
 
@@ -194,7 +188,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
           {/* Sub-label below map */}
           <div className="flex items-center justify-between text-[9.5px] font-mono tracking-[0.18em] text-[#92918C] uppercase pt-3">
-            <span>АЛЕН МАК, БЛАГОЕВГРАД</span>
+            <span>ВАРНА, БЪЛГАРИЯ</span>
             <span>BG / EU</span>
           </div>
         </motion.div>
