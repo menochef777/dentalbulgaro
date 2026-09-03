@@ -234,48 +234,148 @@ const MaskedCard: React.FC<MaskedCardProps> = ({
 };
 
 // ==========================================
-// SPLASH SCREEN COMPONENT
+// PREMIUM MOTIONSITES-STYLE INTRO
 // ==========================================
 interface SplashScreenProps {
   onComplete: () => void;
 }
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
+  const [phase, setPhase] = useState<'enter' | 'counting' | 'completed' | 'revealing'>('enter');
   const [count, setCount] = useState(0);
-  const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    const totalDuration = 2000;
-    const stepTime = 20;
-    const totalSteps = totalDuration / stepTime;
+    // Phase 1: 0.0s -> 0.5s: Subtle editorial entrance
+    const timerPhase1 = setTimeout(() => {
+      setPhase('counting');
+    }, 450);
 
-    let currentStep = 0;
-    const timer = setInterval(() => {
-      currentStep++;
-      setCount(Math.min(100, Math.floor((currentStep / totalSteps) * 100)));
+    // Phase 2: 0.5s -> 1.6s: Smooth high-speed interpolation counter
+    const startTime = Date.now() + 450;
+    const duration = 1150; // 1.15s counter duration
 
-      if (currentStep >= totalSteps) {
-        clearInterval(timer);
-        setTimeout(() => {
-          setExiting(true);
+    let animFrame: number;
+
+    const updateCounter = () => {
+      const now = Date.now();
+      const elapsed = now - startTime;
+
+      if (elapsed > 0) {
+        const progress = Math.min(1, elapsed / duration);
+        // Smooth exponential ease-out
+        const easeVal = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const currentCount = Math.floor(easeVal * 100);
+        setCount(currentCount);
+
+        if (progress >= 1) {
+          setCount(100);
+          setPhase('completed');
+          // Phase 3 & 4: Hold 180ms at 100, then trigger cinematic curtain reveal
           setTimeout(() => {
-            onComplete();
-          }, 700);
-        }, 200);
+            setPhase('revealing');
+            setTimeout(() => {
+              onComplete();
+            }, 750);
+          }, 180);
+          return;
+        }
       }
-    }, stepTime);
 
-    return () => clearInterval(timer);
+      animFrame = requestAnimationFrame(updateCounter);
+    };
+
+    const startTimer = setTimeout(() => {
+      animFrame = requestAnimationFrame(updateCounter);
+    }, 450);
+
+    return () => {
+      clearTimeout(timerPhase1);
+      clearTimeout(startTimer);
+      cancelAnimationFrame(animFrame);
+    };
   }, [onComplete]);
+
+  const formattedCount = count < 10 ? `0${count}` : `${count}`;
 
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-white flex items-end justify-start transition-opacity duration-700 pointer-events-none ${
-        exiting ? 'opacity-0' : 'opacity-100'
+      className={`fixed inset-0 z-[100] bg-white text-black flex flex-col justify-between p-6 md:p-12 select-none overflow-hidden will-change-transform ${
+        phase === 'revealing'
+          ? '-translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] pointer-events-none'
+          : 'translate-y-0 pointer-events-auto'
       }`}
     >
-      <div className="text-7xl md:text-9xl font-bold tabular-nums p-6 md:p-10 leading-none text-black select-none">
-        {count}
+      {/* Top Bar: Editorial Branding */}
+      <div
+        className={`flex items-center justify-between text-xs sm:text-sm font-semibold tracking-wider transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          phase === 'enter' ? 'opacity-0 -translate-y-3' : 'opacity-100 translate-y-0'
+        }`}
+      >
+        <span className="uppercase tracking-[0.2em] text-neutral-800">
+          Дариа • Стоматология
+        </span>
+        <span className="uppercase tracking-[0.2em] text-neutral-500 font-mono text-[11px] sm:text-xs">
+          Варна, България
+        </span>
+      </div>
+
+      {/* Center: Editorial Main Typography */}
+      <div className="my-auto flex flex-col items-center justify-center text-center">
+        <div
+          className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            phase === 'enter'
+              ? 'opacity-0 translate-y-6 scale-95'
+              : 'opacity-100 translate-y-0 scale-100'
+          }`}
+        >
+          <div className="text-[clamp(2.5rem,8vw,7rem)] font-extrabold uppercase tracking-tight leading-[0.85] text-black">
+            Дариа
+          </div>
+          <div className="text-[clamp(1.8rem,5.5vw,5rem)] font-extrabold uppercase tracking-tight leading-[0.88] text-neutral-800 -mt-1 md:-mt-3">
+            Зъболекар
+          </div>
+        </div>
+
+        <p
+          className={`text-xs sm:text-sm font-medium text-neutral-500 max-w-xs sm:max-w-md mt-4 transition-all duration-700 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            phase === 'enter'
+              ? 'opacity-0 translate-y-4'
+              : 'opacity-100 translate-y-0'
+          }`}
+        >
+          Индивидуален подход и съвременно дентално лечение
+        </p>
+      </div>
+
+      {/* Bottom Bar: Large Speedometer Counter + Status */}
+      <div className="flex items-end justify-between w-full pt-4">
+        {/* Huge High-speed Numerical Indicator */}
+        <div
+          className={`flex items-baseline gap-1 font-bold tabular-nums tracking-tighter leading-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            phase === 'enter' ? 'opacity-0 translate-y-6' : 'opacity-100 translate-y-0'
+          }`}
+        >
+          <span className="text-6xl sm:text-8xl md:text-9xl text-black font-extrabold">
+            {formattedCount}
+          </span>
+          <span className="text-base sm:text-xl font-bold text-neutral-400 font-mono">
+            / 100
+          </span>
+        </div>
+
+        {/* Editorial Sub-Status Indicator */}
+        <div
+          className={`flex flex-col items-end text-right transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            phase === 'enter' ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'
+          }`}
+        >
+          <span className="text-[10px] sm:text-xs font-mono tracking-widest text-neutral-400 uppercase">
+            Статус
+          </span>
+          <span className="text-xs sm:text-sm font-bold text-black uppercase tracking-wider mt-0.5">
+            {count < 100 ? 'Зареждане' : 'Готово'}
+          </span>
+        </div>
       </div>
     </div>
   );
